@@ -1,0 +1,38 @@
+---
+const col = 'flex flex-col gap-1 text-[13px] font-semibold tracking-[.14em]';
+const head = 'mb-2 text-[11px] tracking-[.16em] text-lima';
+const link = 'link-u w-fit py-1.5 hover:text-lima';
+const note = 'text-xs font-normal leading-normal tracking-[.02em]';
+---
+
+<footer class="relative overflow-hidden bg-azul px-[clamp(20px,3vw,40px)] pb-7 pt-14 text-crema">
+  <div aria-hidden="true" data-anim="draw" class="absolute inset-x-0 top-0 h-2 bg-naranja"></div>
+  <div aria-hidden="true" data-anim="pop" style="--i:6;right:clamp(40px,12vw,200px)" class="absolute top-0 h-[22px] w-14 translate-y-1 -rotate-6 bg-lima"></div>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-x-8 gap-y-10 border-b border-crema/30 pb-10">
+    <div data-anim="up" class="flex flex-col gap-3.5">
+      <a href="/" class="flex items-start gap-0.5 font-display text-[40px] leading-[.9] tracking-[-.03em]">FUERA<span class="font-sans text-sm font-bold">®</span></a>
+      <span class="text-[13px] font-semibold tracking-[.14em] text-lima">NO ENCAJAMOS. MEJOR.</span>
+    </div>
+    <nav aria-label="Pie" data-anim="up" style="--i:1" class={col}>
+      <span class={head}>NAVEGAR</span>
+      <a href="/#drop" class={link}>SHOP</a>
+      <a href="/#editorial" class={link}>COLLECTION</a>
+      <a href="/#about" class={link}>ABOUT</a>
+    </nav>
+    <div data-anim="up" style="--i:2" class={col}>
+      <span class={head}>SEGUIR</span>
+      <a href="#" target="_blank" rel="noopener" class={link}>INSTAGRAM ↗</a>
+      <span class={note}>Enlace sin configurar (marca ficticia).</span>
+    </div>
+    <div data-anim="up" style="--i:3" class={col}>
+      <span class={head}>CONTACTO (DEMO)</span>
+      <a href="mailto:hola@fuera.example" class={link + ' tracking-[.04em]'}>hola@fuera.example</a>
+      <span class={note}>Dirección de ejemplo, no monitoreada.</span>
+    </div>
+  </div>
+  <div class="flex flex-wrap justify-between gap-3 pt-[22px] text-xs leading-normal">
+    <span>© 2026 FUERA®. Marca ficticia — proyecto de portfolio.</span>
+    <span>Ecommerce conceptual · Sin pagos · Productos y precios no reales</span>
+  </div>
+  <span aria-hidden="true" class="grain"></span>
+</footer>

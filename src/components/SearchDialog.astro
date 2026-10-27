@@ -1,0 +1,27 @@
+---
+import { PRODUCTS, fmt, href, unsplash } from '../data/products';
+---
+
+<div id="search" hidden class="fixed inset-0 z-85 flex-col [&:not([hidden])]:flex">
+  <div role="dialog" aria-modal="true" aria-label="Buscar" class="animate-pop-in max-h-[85vh] overflow-auto border-b-2 border-azul bg-crema px-[clamp(20px,3vw,40px)] pb-7 pt-5 text-azul">
+    <div class="flex items-center gap-4 border-b-2 border-azul">
+      <label for="q" class="absolute -left-[9999px]">Buscar productos</label>
+      <input id="q" type="search" placeholder="Buscar en Drop 001" class="display h-16 min-w-0 flex-1 bg-transparent text-[clamp(24px,3.4vw,44px)] tracking-[-.02em] outline-none" />
+      <button type="button" data-close class="min-h-11 cursor-pointer text-[13px] font-bold tracking-[.14em]">CERRAR</button>
+    </div>
+    <div class="mt-2 flex flex-col">
+      {PRODUCTS.map((p) => (
+        <a href={href(p)} data-result data-text={`${p.name} ${p.ref} ${p.colors.map((c) => c.name).join(' ')}`.toLowerCase()} class="grid grid-cols-[56px_1fr_auto] items-center gap-4 border-b border-azul/25 py-3 hover:bg-azul/6">
+          <span class="relative isolate h-[70px] w-14 overflow-hidden bg-azul/8">
+            <img src={unsplash(p.imgs[0], 900)} alt="" class="ink-img absolute inset-0 size-full object-cover" />
+            <span class="duo"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-base font-semibold">{p.name}</span><span class="text-[11px] tracking-[.14em]">{p.ref}</span></span>
+          <span class="font-semibold tabular-nums">{fmt(p.price)}</span>
+        </a>
+      ))}
+      <p data-no-results hidden class="mt-5 text-[15px]">Nada con ese nombre. Probá con “tee”, “hoodie” o “cap”.</p>
+    </div>
+  </div>
+  <div data-close class="animate-fade-in flex-1 bg-azul/55"></div>
+</div>

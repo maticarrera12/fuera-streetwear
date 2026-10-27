@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@theme {
+  --color-azul: #0e287f;
+  --color-crema: #f3e9d6;
+  --color-lima: #dbe028;
+  --color-naranja: #ee4a25;
+  --font-display: "Archivo Black", sans-serif;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+
+  /* Motion tokens */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --animate-pop-in: pop-in 200ms var(--ease-out);
+  --animate-fade-in: fade-in 200ms var(--ease-out);
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--color-crema);
+    color: var(--color-azul);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    overflow-x: clip;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  button,
+  input {
+    font: inherit;
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-naranja);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-lima);
+    color: var(--color-azul);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Blue ink photo treatment: grayscale image + multiply overlay */
+  .ink-img {
+    filter: grayscale(1) contrast(1.12) brightness(1.12);
+  }
+  .duo {
+    position: absolute;
+    inset: 0;
+    background: var(--color-azul);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .photo-bg {
+    background: repeating-linear-gradient(135deg, rgb(14 40 127 / 0.08) 0 2px, transparent 2px 11px);
+  }
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.91 0 0 0 0 0.84 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .fx-brush {
+    filter: url(#fx-brush);
+  }
+  .fx-stain {
+    filter: url(#fx-stain);
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  .btn-lima {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-lima);
+    color: var(--color-azul);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    transition: background 0.2s ease, color 0.2s ease, transform 160ms var(--ease-out);
+  }
+  .btn-lima:hover {
+    background: var(--color-crema);
+  }
+  .btn-lima:active {
+    transform: scale(0.97);
+  }
+  .btn-lima span[aria-hidden] {
+    display: inline-block;
+    transition: transform 200ms var(--ease-out);
+  }
+  .btn-lima:hover span[aria-hidden] {
+    transform: translateX(5px);
+  }
+  /* Underline that grows from the left on hover */
+  .link-u {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+    transition: background-size 300ms var(--ease-out), color 200ms ease;
+  }
+  .link-u:hover {
+    background-size: 100% 2px;
+  }
+  .qty-btn:hover:not(:disabled) {
+    background: rgb(14 40 127 / 0.08);
+  }
+}
+
+/* ---------- Motion (unlayered on purpose: wins over utilities) ---------- */
+
+@keyframes rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes line-in { from { clip-path: inset(0 0 100% 0); transform: translateY(70%); } to { clip-path: inset(-50% -100% -50% -100%); transform: none; } }
+@keyframes clip-l { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes stamp { from { opacity: 0; transform: scale(2.4) rotate(22deg); } to { opacity: 1; transform: none; } }
+@keyframes sticker { from { opacity: 0; transform: translateX(-70px) rotate(10deg) scaleX(0.7); } to { opacity: 1; transform: none; } }
+@keyframes draw { from { transform: scaleX(0); } to { transform: none; } }
+@keyframes float { 50% { translate: 0 -9px; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes hero-zoom { to { scale: 1.14; translate: 0 5%; } }
+@keyframes drift { from { translate: 0 -36px; } to { translate: 0 36px; } }
+
+/* Page-load (hero, product page) */
+.a-rise { animation: rise 800ms var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.a-line { animation: line-in 900ms var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.a-clip-l { animation: clip-l 1100ms var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.a-sticker { animation: sticker 700ms cubic-bezier(0.3, 1.4, 0.5, 1) both; animation-delay: var(--d, 0ms); }
+.a-draw { transform-origin: left center; animation: draw 700ms var(--ease-out) both; animation-delay: var(--d, 0ms); }
+.a-badge {
+  animation: stamp 700ms cubic-bezier(0.3, 1.6, 0.5, 1) 900ms both, float 5s ease-in-out 1.8s infinite;
+}
+.stagger > * { animation: rise 700ms var(--ease-out) both; }
+.stagger > :nth-child(1) { animation-delay: 80ms; }
+.stagger > :nth-child(2) { animation-delay: 150ms; }
+.stagger > :nth-child(3) { animation-delay: 220ms; }
+.stagger > :nth-child(4) { animation-delay: 290ms; }
+.stagger > :nth-child(5) { animation-delay: 360ms; }
+.stagger > :nth-child(6) { animation-delay: 430ms; }
+.stagger > :nth-child(n + 7) { animation-delay: 500ms; }
+
+/* Marquee ribbon */
+.marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Scroll-driven (progressive enhancement: browsers without support just skip it) */
+@supports (animation-timeline: view()) {
+  .hero-photo img { animation: hero-zoom linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
+  .parallax { animation: drift linear both; animation-timeline: view(); }
+}
+
+/* Scroll-triggered (toggled by IntersectionObserver in ui.ts) */
+.js [data-anim] {
+  transition: opacity 600ms var(--ease-out), transform 800ms var(--ease-out), clip-path 1000ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.js [data-anim="up"] { opacity: 0; transform: translateY(26px); }
+.js [data-anim="clip-up"] { clip-path: inset(0 0 100% 0); transform: translateY(40px); }
+.js [data-anim="wipe-l"] { clip-path: inset(0 100% 0 0); }
+.js [data-anim="wipe-r"] { clip-path: inset(0 0 0 100%); }
+.js [data-anim="wipe-u"] { clip-path: inset(100% 0 0 0); }
+.js [data-anim="pop"] {
+  opacity: 0;
+  transform: scale(0.4) rotate(-18deg);
+  transition: opacity 300ms ease-out, transform 600ms cubic-bezier(0.3, 1.6, 0.5, 1);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.js [data-anim="drop"] {
+  opacity: 0;
+  transform: translateY(-420%) rotate(-40deg);
+  transition: opacity 200ms ease-out, transform 900ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.js [data-anim="draw"] { transform: scaleX(0); transform-origin: left center; }
+.js [data-anim].is-in { opacity: 1; transform: none; clip-path: inset(-50% -100% -50% -100%); }
+.js [data-anim^="wipe"] img { scale: 1.25; transition: scale 1500ms var(--ease-out); }
+.js [data-anim^="wipe"].is-in img { scale: 1; }
+
+/* Reduced motion: keep opacity/colour feedback, drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  .a-rise, .a-line, .a-clip-l, .a-sticker, .a-draw, .a-badge, .stagger > * {
+    animation-name: fade-in;
+    animation-duration: 300ms;
+  }
+  .a-badge { animation-iteration-count: 1; }
+  .marquee-track, .hero-photo img, .parallax { animation: none; }
+  .js [data-anim] {
+    transform: none !important;
+    clip-path: none !important;
+    transition-duration: 300ms !important;
+  }
+  .js [data-anim^="wipe"] img { scale: 1; }
+  .js [data-anim].is-in { opacity: 1; }
+  .js [data-anim="pop"], .js [data-anim="drop"], .js [data-anim="draw"], .js [data-anim^="wipe"], .js [data-anim="clip-up"] { opacity: 0; }
+  .js [data-anim].is-in { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop-in { animation-name: fade-in; }
+  .group img { transform: none !important; scale: 1 !important; }
+  #cart { transform: none; opacity: 0; transition-property: opacity, visibility; }
+  #cart[data-open] { opacity: 1; }
+  button:active, a:active { transform: none !important; }
+}

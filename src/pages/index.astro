@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { IMG, PRODUCTS } from '../data/products';
+
+const dots = 'pointer-events-none absolute';
+const sq = 'aspect-square w-[clamp(22px,4.2vw,60px)]';
+const frame = 'photo-bg relative isolate overflow-hidden';
+const cap = 'text-[11px] font-semibold uppercase tracking-[.14em]';
+---
+
+<Layout>
+  <Hero />
+  <Marquee />
+
+  <section id="drop" data-screen-label="Drop 001" aria-labelledby="drop-title" class="relative overflow-hidden bg-crema px-[clamp(20px,3vw,40px)] py-[clamp(64px,9vw,128px)] text-azul">
+    <span aria-hidden="true" class={`${dots} parallax fx-stain rounded-full bg-naranja`} style="top:clamp(36px,5vw,72px);left:clamp(230px,34vw,560px);width:clamp(48px,6vw,96px);height:clamp(48px,6vw,96px)"></span>
+    <span aria-hidden="true" class={`${dots} right-0 top-0`} style="width:min(40vw,520px);height:min(26vw,320px);background-image:radial-gradient(circle,#0E287F 1.3px,transparent 1.9px);background-size:10px 10px;-webkit-mask-image:radial-gradient(circle at 100% 0%,#000 0%,transparent 70%);mask-image:radial-gradient(circle at 100% 0%,#000 0%,transparent 70%)"></span>
+    <div class="relative mb-[clamp(28px,4vw,48px)] flex flex-wrap items-end justify-between gap-x-12 gap-y-6 border-b-2 border-azul pb-6">
+      <div class="flex flex-col gap-[18px]">
+        <span data-anim="up" class="eyebrow">01 — Nueva colección</span>
+        <h2 id="drop-title" data-anim="clip-up" class="display text-[clamp(42px,7vw,112px)] leading-[.88] tracking-[-.03em]">Drop 001 —<br />Fuera de serie</h2>
+      </div>
+      <div data-anim="up" style="--i:2" class="flex max-w-[360px] flex-col gap-3.5">
+        <p class="text-base leading-normal text-pretty">Cuatro piezas para todos los días. Algodón pesado, calces amplios y gráficos que no piden permiso.</p>
+        <span class="eyebrow">04 piezas · Tirada limitada</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-[clamp(14px,1.6vw,24px)] gap-y-[clamp(28px,3vw,40px)]">
+      {PRODUCTS.map((p, i) => <ProductCard product={p} index={i} />)}
+    </div>
+    <p class="mt-10 text-xs tracking-[.04em]">Precios en ARS, ficticios. FUERA® es una marca conceptual: no hay stock ni ventas reales.</p>
+  </section>
+
+  <section id="about" data-screen-label="Manifiesto" aria-labelledby="about-title" class="relative overflow-hidden bg-azul px-[clamp(20px,3vw,40px)] py-[clamp(72px,10vw,160px)] text-crema">
+    <span aria-hidden="true" class={`${dots} right-0 top-0 h-full w-[62vw]`} style="background-image:radial-gradient(circle,#F3E9D6 2.2px,transparent 2.8px);background-size:14px 14px;-webkit-mask-image:radial-gradient(circle at 100% 30%,#000 0%,transparent 62%);mask-image:radial-gradient(circle at 100% 30%,#000 0%,transparent 62%)"></span>
+    <span aria-hidden="true" class={`${dots} parallax fx-stain rounded-full bg-naranja`} style="right:clamp(20px,7vw,140px);top:clamp(90px,12vw,200px);width:clamp(56px,8vw,140px);height:clamp(56px,8vw,140px)"></span>
+    <div data-anim="up" class="eyebrow relative mb-[clamp(36px,5vw,64px)] flex flex-wrap justify-between gap-3">
+      <span>02 — Manifiesto</span><span>FUERA® / Independent by design</span>
+    </div>
+    <h2 id="about-title" data-anim="clip-up" class="display relative text-[clamp(50px,10vw,172px)] leading-[.86] tracking-[-.035em] text-lima">No se trata<br />de encajar.</h2>
+    <div aria-hidden="true" class="mb-[clamp(56px,7vw,96px)] mt-[clamp(40px,6vw,80px)] flex gap-[clamp(6px,1vw,12px)]">
+      {[0, 1, 2, 3, 4].map((i) => <span data-anim="pop" style={`--i:${i}`} class={`${sq} border-2 border-crema`}></span>)}
+      <span data-anim="drop" style="--i:6" class={`${sq} translate-y-[55%] rotate-[11deg] bg-lima`}></span>
+      {[6, 7].map((i) => <span data-anim="pop" style={`--i:${i + 1}`} class={`${sq} border-2 border-crema`}></span>)}
+    </div>
+    <div class="relative grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-end gap-x-[clamp(32px,6vw,96px)] gap-y-8">
+      <p data-anim="up" class="text-[clamp(22px,2.4vw,34px)] font-medium leading-[1.2] text-pretty">FUERA nace de una idea simple: vestirse no debería ser una forma de pedir permiso.</p>
+      <div data-anim="up" style="--i:2" class="flex max-w-[440px] flex-col gap-6">
+        <p class="text-[17px] leading-[1.55] text-pretty">Prendas cotidianas, gráficos con intención y una identidad que no necesita seguir el resto.</p>
+        <a href="/#drop" class="self-start py-1.5 text-[13px] font-bold tracking-[.14em] text-lima underline decoration-2 underline-offset-6 hover:text-crema">VER DROP 001 →</a>
+      </div>
+    </div>
+    <span aria-hidden="true" class="grain"></span>
+  </section>
+
+  <section id="editorial" data-screen-label="Editorial" aria-labelledby="ed-title" class="bg-crema px-[clamp(20px,3vw,40px)] py-[clamp(72px,10vw,150px)] text-azul">
+    <div class="mb-[clamp(40px,6vw,88px)] flex flex-wrap items-end justify-between gap-5">
+      <div class="flex flex-col gap-[18px]">
+        <span data-anim="up" class="eyebrow">03 — Campaign 001</span>
+        <h2 id="ed-title" data-anim="clip-up" class="display text-[clamp(42px,7vw,112px)] leading-[.88] tracking-[-.03em]">Fuera de<br />contexto</h2>
+      </div>
+      <span data-anim="pop" style="--i:3" class="-rotate-3 bg-naranja px-2.5 py-[7px] text-[11px] font-bold tracking-[.14em] text-[#111]">INDEPENDENT BY DESIGN</span>
+    </div>
+    <div class="grid grid-cols-12 gap-x-[clamp(12px,2vw,24px)] gap-y-[clamp(36px,6vw,88px)]">
+      <figure class="col-span-full flex flex-col gap-3 min-[900px]:col-[1/8]">
+        <div data-anim="wipe-l" class={`${frame} aspect-[4/5]`}>
+          <img src={IMG.edA} alt="Joven con skate en un estacionamiento" loading="lazy" class="ink-img absolute inset-0 size-full object-cover" />
+          <span class="duo"></span>
+          <span class="absolute bottom-0 left-0 bg-crema py-2.5 pl-0 pr-3.5 pt-2.5 font-display text-[clamp(28px,4vw,56px)] leading-[.85]">01</span>
+        </div>
+        <figcaption data-anim="up" style="--i:3" class={`${cap} flex justify-between gap-3`}><span>Look 01 — Heavy Tee + Signature Cap</span><span>Estacionamiento</span></figcaption>
+      </figure>
+      <figure class="col-[4/-1] flex flex-col gap-3 self-end min-[900px]:col-[9/13]">
+        <div data-anim="wipe-u" class={`${frame} aspect-[3/4]`}>
+          <img src={IMG.edB} alt="Retrato de una joven con remera de color" loading="lazy" class="ink-img absolute inset-0 size-full object-cover" />
+          <span class="duo"></span>
+        </div>
+        <figcaption data-anim="up" style="--i:3" class={cap}>Look 02 — No Rules Tee</figcaption>
+      </figure>
+      <div class="col-span-full flex flex-col gap-5 self-start pt-2 min-[900px]:col-[1/5]">
+        <span data-anim="pop" class="relative isolate self-start font-display text-[clamp(40px,5vw,72px)] leading-[.85]">
+          <span aria-hidden="true" class="fx-stain pointer-events-none absolute -left-[.25em] -top-[.2em] -z-10 h-[1.3em] w-[1.6em] rounded-full bg-lima"></span>03
+        </span>
+        <p data-anim="up" style="--i:2" class="max-w-[30ch] text-[17px] leading-normal text-pretty">Tres looks, ninguna regla. Las piezas de Drop 001 en su contexto natural: la calle, el cemento y el resto de la semana.</p>
+        <a href="/#drop" class="self-start py-1.5 text-[13px] font-bold tracking-[.14em] underline decoration-2 underline-offset-6 hover:text-naranja">COMPRAR LOS LOOKS →</a>
+      </div>
+      <figure class="col-span-full flex flex-col gap-3 min-[900px]:col-[6/13]">
+        <div data-anim="wipe-r" class={`${frame} aspect-[16/10]`}>
+          <img src={IMG.edC} alt="Dos personas sentadas sobre el capó de un auto" loading="lazy" class="ink-img absolute inset-0 size-full object-cover object-[50%_35%]" />
+          <span class="duo"></span>
+        </div>
+        <figcaption data-anim="up" style="--i:3" class={`${cap} flex justify-between gap-3`}><span>Look 03 — Daily Uniform Hoodie</span><span>Campaign 001</span></figcaption>
+      </figure>
+    </div>
+  </section>
+</Layout>

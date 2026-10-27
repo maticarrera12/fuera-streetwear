@@ -1,0 +1,55 @@
+---
+const iconBtn = 'min-h-10 cursor-pointer text-[11px] font-bold tracking-[.14em] underline underline-offset-4';
+---
+
+<div data-close data-overlay aria-hidden="true" class="pointer-events-none fixed inset-0 z-94 bg-azul/55 opacity-0 transition-opacity duration-300 ease-out data-[open]:pointer-events-auto data-[open]:opacity-100"></div>
+<aside id="cart" role="dialog" aria-modal="true" aria-label="Carrito" aria-hidden="true" class="invisible fixed bottom-0 right-0 top-0 z-95 flex w-[min(440px,100vw)] translate-x-full flex-col border-l-2 border-azul bg-crema text-azul transition-[transform,visibility] duration-350 ease-drawer data-[open]:visible data-[open]:translate-x-0">
+  <div class="flex h-[62px] flex-none items-center justify-between border-b-2 border-azul px-5">
+    <span class="display text-[22px] tracking-[-.02em]">Carrito (<span data-cart-count-label>0</span>)</span>
+    <button type="button" data-close class="min-h-11 cursor-pointer text-[13px] font-bold tracking-[.14em]">CERRAR</button>
+  </div>
+  <div class="bg-lima px-5 py-[9px] text-[11px] font-bold uppercase tracking-[.12em]">Ecommerce conceptual — no se procesan pagos</div>
+
+  <div data-cart-empty class="flex flex-1 flex-col justify-center gap-5 px-5 py-8">
+    <span class="display text-[clamp(36px,9vw,52px)] leading-[.88] tracking-[-.03em]">Vacío.<br />Por ahora.</span>
+    <p class="max-w-[30ch] text-[15px] leading-normal">Todavía no agregaste nada. Drop 001 tiene cuatro piezas esperando.</p>
+    <a href="/#drop" class="inline-flex h-[54px] items-center gap-3 self-start bg-azul px-6 text-[13px] font-bold tracking-[.12em] text-lima hover:bg-naranja hover:text-[#111]">VER DROP 001 →</a>
+  </div>
+
+  <div data-cart-has hidden class="min-h-0 flex-1 flex-col [&:not([hidden])]:flex">
+    <ul data-cart-lines class="m-0 flex-1 list-none overflow-auto px-5"></ul>
+    <div class="flex flex-none flex-col gap-3 border-t-2 border-azul p-5">
+      <div class="flex items-baseline justify-between">
+        <span class="text-xs font-bold tracking-[.14em]">SUBTOTAL</span>
+        <span data-subtotal class="font-display text-[26px] tabular-nums"></span>
+      </div>
+      <span class="text-xs">Envío e impuestos se calcularían en el checkout.</span>
+      <button type="button" disabled class="h-14 cursor-not-allowed border-2 border-dashed border-azul text-[13px] font-bold tracking-[.12em] opacity-60">CHECKOUT NO DISPONIBLE — DEMO</button>
+      <button type="button" data-close class={iconBtn + ' text-xs'}>SEGUIR MIRANDO</button>
+    </div>
+  </div>
+</aside>
+
+<template id="cart-line">
+  <li class="grid grid-cols-[76px_1fr] gap-4 border-b border-azul/25 py-[18px]">
+    <a data-l-link class="relative isolate block h-[95px] w-[76px] overflow-hidden bg-azul/8">
+      <img data-l-img alt="" class="ink-img absolute inset-0 size-full object-cover" />
+      <span class="duo"></span>
+    </a>
+    <div class="flex min-w-0 flex-col gap-2.5">
+      <div class="flex justify-between gap-2.5">
+        <span data-l-name class="text-[15px] font-semibold leading-tight"></span>
+        <span data-l-total class="whitespace-nowrap text-[15px] font-semibold tabular-nums"></span>
+      </div>
+      <span data-l-meta class="text-xs tracking-[.06em]"></span>
+      <div class="flex items-center justify-between gap-2.5">
+        <div role="group" aria-label="Cantidad" class="flex h-10 items-center border-2 border-azul">
+          <button type="button" data-l-dec aria-label="Restar uno" class="qty-btn h-full w-10 cursor-pointer text-lg">−</button>
+          <span data-l-qty class="w-7 text-center font-semibold tabular-nums"></span>
+          <button type="button" data-l-inc aria-label="Sumar uno" class="qty-btn h-full w-10 cursor-pointer text-lg disabled:cursor-not-allowed disabled:opacity-40">+</button>
+        </div>
+        <button type="button" data-l-remove class={iconBtn + ' hover:text-naranja'}>QUITAR</button>
+      </div>
+    </div>
+  </li>
+</template>

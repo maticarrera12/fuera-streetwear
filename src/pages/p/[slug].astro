@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { PRODUCTS, fmt, unsplash, type Product } from '../../data/products';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+const { p } = Astro.props as { p: Product };
+const gallery = p.imgs.map((id) => unsplash(id, 1200));
+const altTxt = ['Look completo', 'Detalle en uso', 'En contexto'];
+const recs = PRODUCTS.filter((x) => x.slug !== p.slug);
+const single = p.sizes.length === 1;
+const label = 'text-xs font-bold uppercase tracking-[.14em]';
+const summary = 'flex cursor-pointer list-none justify-between py-[18px] text-xs font-bold uppercase tracking-[.14em]';
+---
+
+<Layout title={`${p.name} — FUERA®`}>
+  <main data-pdp data-slug={p.slug} data-price={p.price} data-single-size={single ? p.sizes[0] : ''} data-screen-label="Producto" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+      <a href="/#drop" class="hover:underline">Shop</a><span aria-hidden="true">/</span>
+      <a href="/#drop" class="hover:underline">Drop 001</a><span aria-hidden="true">/</span>
+      <span aria-current="page">{p.name}</span>
+    </nav>
+
+    <div class="grid grid-cols-1 items-start gap-[clamp(28px,4vw,72px)] min-[900px]:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+      <div class="flex min-w-0 flex-col gap-3">
+        <div class="a-clip-l photo-bg relative isolate aspect-[4/5] overflow-hidden">
+          <span class="absolute bottom-3.5 left-3.5 text-[11px] uppercase tracking-[.12em]">Foto producto</span>
+          <img data-main-img src={gallery[0]} alt={`${p.name} — ${altTxt[0]}`} class="ink-img transition-opacity duration-150 ease-out absolute inset-0 size-full object-cover" />
+          <span class="duo"></span>
+          <span class="absolute left-3.5 top-3.5 bg-crema px-[9px] pb-[5px] pt-1.5 font-display text-sm leading-none">{p.n} / 04</span>
+          <span data-gi-label class="absolute bottom-3.5 right-3.5 bg-crema px-[9px] py-1.5 text-[11px] font-bold tracking-[.14em]">1 / {gallery.length}</span>
+        </div>
+        <div role="group" aria-label="Galería" class="stagger grid grid-cols-3 gap-3">
+          {p.imgs.map((id, i) => (
+            <button type="button" data-thumb={i} data-src={gallery[i]} data-alt={`${p.name} — ${altTxt[i]}`} aria-label={`Ver imagen ${i + 1}: ${altTxt[i]}`} aria-pressed={i === 0} class="group relative isolate aspect-square cursor-pointer overflow-hidden bg-azul/8 p-0 -outline-offset-3 aria-pressed:outline-3 aria-pressed:outline-naranja">
+              <img src={unsplash(id, 400)} alt="" loading="lazy" class="ink-img absolute inset-0 size-full object-cover opacity-70 transition-opacity duration-200 group-aria-pressed:opacity-100" />
+              <span class="duo"></span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="stagger flex min-w-0 flex-col gap-7 min-[900px]:sticky min-[900px]:top-[84px]">
+        <div class="flex flex-col gap-3.5">
+          <div class="flex flex-wrap items-center gap-x-3.5 gap-y-2.5 text-[11px] font-semibold uppercase tracking-[.14em]">
+            <span>Drop 001 — Ref. {p.ref}</span>
+            {p.tag && <span class="-rotate-3 bg-naranja px-2 py-[5px] font-bold text-[#111]">{p.tag}</span>}
+          </div>
+          <h1 class="display text-[clamp(36px,4.6vw,68px)] leading-[.9] tracking-[-.03em] text-balance">{p.name}</h1>
+          <div class="flex items-baseline gap-3">
+            <span class="text-2xl font-semibold tabular-nums">{fmt(p.price)}</span>
+            <span class="text-xs">ARS · precio ficticio</span>
+          </div>
+          <p class="max-w-[46ch] text-base leading-[1.55] text-pretty">{p.short}</p>
+        </div>
+
+        <fieldset class="m-0 flex flex-col gap-3 border-0 p-0">
+          <legend class={`${label} mb-3 p-0`}>Color — <span data-color-name class="font-medium">{p.colors[0].name}</span></legend>
+          <div class="flex flex-wrap gap-3.5">
+            {p.colors.map((c, i) => (
+              <button type="button" data-color={c.id} data-name={c.name} aria-label={c.name} aria-pressed={i === 0} style={`background:${c.bg}`} class="size-11 cursor-pointer rounded-full shadow-[0_0_0_1.5px_#0E287F] transition-shadow duration-200 aria-pressed:shadow-[0_0_0_3px_#F3E9D6,0_0_0_5px_#0E287F]"></button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="m-0 border-0 p-0">
+          <legend class={`${label} mb-3 flex w-full justify-between p-0`}><span>Talle</span><span class="font-medium normal-case tracking-[.06em]">{p.fitShort}</span></legend>
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(64px,1fr))] gap-2">
+            {p.sizes.map((z) => {
+              const out = p.soldOut.includes(z);
+              return (
+                <button type="button" data-size={z} disabled={out} aria-pressed={single} aria-label={out ? `Talle ${z}, agotado` : `Talle ${z}`} class="h-[52px] cursor-pointer border-2 border-azul text-sm font-semibold tracking-[.06em] transition-[background-color,color,transform] duration-150 ease-out active:scale-[.97] hover:bg-azul/10 aria-pressed:bg-azul aria-pressed:text-crema disabled:cursor-not-allowed disabled:line-through disabled:opacity-35 disabled:hover:bg-transparent">{z}</button>
+              );
+            })}
+          </div>
+          {p.soldOut.length > 0 && <p class="mt-2.5 text-xs">Talles tachados: agotados (estado de demostración).</p>}
+        </fieldset>
+
+        <div class="flex flex-wrap gap-2.5">
+          <div role="group" aria-label="Cantidad" class="flex h-14 items-center border-2 border-azul">
+            <button type="button" data-qty-dec aria-label="Restar uno" class="qty-btn h-full w-12 cursor-pointer text-xl disabled:cursor-not-allowed disabled:opacity-40">−</button>
+            <span data-qty aria-live="polite" class="w-9 text-center font-semibold tabular-nums">1</span>
+            <button type="button" data-qty-inc aria-label="Sumar uno" class="qty-btn h-full w-12 cursor-pointer text-xl disabled:cursor-not-allowed disabled:opacity-40">+</button>
+          </div>
+          <button type="button" data-add data-state={single ? 'ready' : 'size'} class="h-14 flex-[1_1_220px] cursor-pointer border-0 text-sm font-bold tracking-[.12em] transition-[background-color,color,transform] duration-200 ease-out active:scale-[.97] data-[state=added]:cursor-default data-[state=added]:bg-lima data-[state=added]:text-azul data-[state=ready]:bg-azul data-[state=ready]:text-lima data-[state=ready]:hover:bg-naranja data-[state=size]:cursor-not-allowed data-[state=size]:bg-azul/28 data-[state=size]:text-azul">
+            {single ? `AGREGAR AL CARRITO — ${fmt(p.price)}` : 'ELEGÍ TU TALLE'}
+          </button>
+        </div>
+        <p class="-mt-3.5 text-xs leading-normal">Ecommerce conceptual: podés armar el carrito, pero no se procesan pagos ni compras.</p>
+
+        <div class="border-t-2 border-azul">
+          <details open class="border-b border-azul/35">
+            <summary class={summary}>Descripción <span aria-hidden="true">+</span></summary>
+            <p class="mb-5 text-[15px] leading-[1.6] text-pretty">{p.desc}</p>
+          </details>
+          <details class="border-b border-azul/35">
+            <summary class={summary}>Materiales y cuidados <span aria-hidden="true">+</span></summary>
+            <div class="flex flex-col gap-2.5 pb-5 text-[15px] leading-[1.6]">
+              <span>{p.material}</span>
+              <span>{p.care}</span>
+              <span class="text-xs">Contenido ficticio de demostración.</span>
+            </div>
+          </details>
+          <details class="border-b border-azul/35">
+            <summary class={summary}>Calce <span aria-hidden="true">+</span></summary>
+            <p class="mb-5 text-[15px] leading-[1.6]">{p.fit}</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <section aria-labelledby="rec-title" class="mt-[clamp(80px,10vw,144px)]">
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-4 border-b-2 border-azul pb-5">
+        <h2 id="rec-title" class="display text-[clamp(32px,4.4vw,64px)] leading-[.9] tracking-[-.03em]">Completá<br />el uniforme</h2>
+        <a href="/#drop" class="py-2 text-xs font-bold tracking-[.14em] hover:text-naranja">VER TODO DROP 001 →</a>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-[clamp(14px,1.6vw,24px)] gap-y-8">
+        {recs.map((r, i) => <ProductCard product={r} detailed={false} index={i} />)}
+      </div>
+    </section>
+  </main>
+</Layout>

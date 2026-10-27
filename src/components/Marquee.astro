@@ -1,0 +1,17 @@
+---
+const items = ['No encajamos', 'Drop 001', 'Independent by design', 'FUERA®', 'Fuera de serie', 'Buenos Aires, AR'];
+---
+
+<div aria-hidden="true" class="marquee overflow-hidden border-y-2 border-azul bg-lima py-3 text-azul">
+  <div class="marquee-track">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0 items-center">
+        {items.map((t) => (
+          <span class="flex items-center font-display text-[clamp(20px,2.6vw,34px)] uppercase leading-none tracking-[-.02em]">
+            <span class="px-6">{t}</span><span class="text-naranja">✱</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>

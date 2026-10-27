@@ -1,0 +1,71 @@
+---
+import { IMG } from '../data/products';
+const alt = 'Modelo parado en medio de la calle con un look oversize';
+const dots = 'pointer-events-none absolute';
+---
+
+<div id="top">
+  <!-- Desktop -->
+  <section data-screen-label="Hero" aria-label="Campaña Drop 001" class="relative flex h-[clamp(640px,calc(100svh-98px),940px)] flex-col justify-end overflow-hidden bg-azul px-10 pb-10 text-crema max-[899px]:hidden">
+    <span aria-hidden="true" class={`${dots} bottom-0 left-0 h-[85%] w-[58vw]`} style="background-image:radial-gradient(circle,#DBE028 1.7px,transparent 2.3px);background-size:11px 11px;-webkit-mask-image:radial-gradient(ellipse at 0% 100%,#000 0%,transparent 62%);mask-image:radial-gradient(ellipse at 0% 100%,#000 0%,transparent 62%)"></span>
+    <div class="a-clip-l hero-photo absolute inset-y-0 right-[7vw] isolate w-[37vw] overflow-hidden bg-azul" style="--d:150ms">
+      <span class="absolute bottom-4 left-4 text-[11px] uppercase tracking-[.14em] text-crema">Foto campaña — look completo</span>
+      <img src={IMG.hero} alt={alt} fetchpriority="high" class="ink-img absolute inset-0 size-full object-cover object-[50%_30%]" />
+      <span class="duo"></span>
+    </div>
+    <div aria-hidden="true" class="a-badge absolute top-[14%] z-3 flex size-[132px] -rotate-12 flex-col items-center justify-center gap-1 rounded-full bg-lima text-azul" style="right:calc(44vw - 66px)">
+      <span class="text-[10px] font-bold tracking-[.18em]">OUT NOW</span>
+      <span class="text-center font-display text-[26px] leading-[.9]">DROP<br />001</span>
+    </div>
+    <div class="eyebrow a-rise absolute left-10 top-[26px] z-2 flex gap-7" style="--d:100ms">
+      <span class="flex items-center gap-2.5"><span class="size-2 bg-lima"></span>Independent streetwear</span>
+      <span>Drop 001</span>
+      <span>Buenos Aires, AR</span>
+    </div>
+    <div aria-hidden="true" class="eyebrow absolute right-[18px] top-1/2 -translate-y-1/2 rotate-180 tracking-[.22em] [writing-mode:vertical-rl]">Campaign 001 — Fuera de lo esperado</div>
+    <div class="a-rise relative z-2 mb-[clamp(32px,5vw,72px)] flex max-w-[min(30vw,420px)] flex-col gap-7" style="--d:800ms">
+      <p class="text-[clamp(18px,1.5vw,22px)] font-medium leading-[1.35] text-pretty">Uniformes para quienes van por su cuenta.</p>
+      <div class="flex flex-wrap gap-3">
+        <a href="/#drop" class="btn-lima h-[54px] gap-3 px-[26px]">EXPLORAR DROP 001 <span aria-hidden="true">→</span></a>
+        <a href="/#about" class="inline-flex h-[54px] items-center border-2 border-crema px-[22px] text-[13px] font-bold tracking-[.12em] text-crema transition-colors duration-200 hover:bg-crema hover:text-azul">CONOCÉ FUERA</a>
+      </div>
+    </div>
+    <h1 class="display relative z-2 text-[9.2vw] leading-[.86] tracking-[-.035em] text-crema">
+      <span class="a-line block" style="--d:250ms">No encajamos.</span>
+      <span style="--d:650ms" class="a-sticker relative isolate ml-[44vw] mt-[.08em] inline-block origin-bottom-left -rotate-[2.5deg] bg-lima px-[.14em] pb-[.01em] pt-[.05em] text-azul">
+        <span aria-hidden="true" style="--d:1200ms" class="a-draw fx-brush absolute -right-[14%] left-[38%] top-[74%] -z-10 h-[.36em] -rotate-[1.5deg] bg-naranja"></span>Mejor.
+      </span>
+    </h1>
+    <span aria-hidden="true" class="grain"></span>
+  </section>
+
+  <!-- Mobile -->
+  <section data-screen-label="Hero" aria-label="Campaña Drop 001" class="relative overflow-hidden bg-azul px-5 pb-9 pt-4 text-crema min-[900px]:hidden">
+    <span aria-hidden="true" class={`${dots} left-0 top-10 h-3/4 w-[70%]`} style="background-image:radial-gradient(circle,#DBE028 1.4px,transparent 2px);background-size:9px 9px;-webkit-mask-image:radial-gradient(ellipse at 0% 60%,#000 0%,transparent 60%);mask-image:radial-gradient(ellipse at 0% 60%,#000 0%,transparent 60%)"></span>
+    <div class="flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] font-semibold uppercase tracking-[.16em]">
+      <span class="flex items-center gap-2"><span class="size-[7px] bg-lima"></span>Independent streetwear</span>
+      <span>Drop 001</span><span>Buenos Aires</span>
+    </div>
+    <div class="a-clip-l hero-photo relative isolate -mr-5 ml-[18%] mt-4 aspect-[4/5] max-h-[68svh] overflow-hidden" style="--d:150ms">
+      <img src={IMG.hero} alt={alt} fetchpriority="high" class="ink-img absolute inset-0 size-full object-cover object-[50%_25%]" />
+      <span class="duo"></span>
+    </div>
+    <div aria-hidden="true" class="a-badge absolute left-3.5 top-16 flex size-24 -rotate-12 flex-col items-center justify-center gap-[3px] rounded-full bg-lima text-azul">
+      <span class="text-[8px] font-bold tracking-[.18em]">OUT NOW</span>
+      <span class="text-center font-display text-[19px] leading-[.9]">DROP<br />001</span>
+    </div>
+    <h1 class="display relative -mt-[.62em] text-[13.4vw] leading-[.88] tracking-[-.035em] text-crema">
+      <span class="a-line block" style="--d:250ms">No</span>
+      <span class="a-line block" style="--d:380ms">encajamos.</span>
+      <span style="--d:650ms" class="a-sticker relative isolate ml-[22vw] mt-[.08em] inline-block -rotate-[2.5deg] bg-lima px-[.14em] pb-[.01em] pt-[.05em] text-azul">
+        <span aria-hidden="true" style="--d:1200ms" class="a-draw fx-brush absolute -right-[16%] left-[34%] top-[74%] -z-10 h-[.36em] -rotate-[1.5deg] bg-naranja"></span>Mejor.
+      </span>
+    </h1>
+    <p style="--d:800ms" class="a-rise mb-6 mt-7 max-w-[26ch] text-lg font-medium leading-[1.35]">Uniformes para quienes van por su cuenta.</p>
+    <div style="--d:950ms" class="a-rise flex flex-col gap-2.5">
+      <a href="/#drop" class="btn-lima h-14 justify-between px-5">EXPLORAR DROP 001 <span aria-hidden="true">→</span></a>
+      <a href="/#about" class="flex h-14 items-center border-2 border-crema px-5 text-[13px] font-bold tracking-[.12em] text-crema">CONOCÉ FUERA</a>
+    </div>
+    <span aria-hidden="true" class="grain"></span>
+  </section>
+</div>

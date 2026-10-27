@@ -1,0 +1,39 @@
+---
+import { fmt, href, unsplash, type Product } from '../data/products';
+
+interface Props {
+  product: Product;
+  detailed?: boolean;
+  index?: number;
+}
+const { product: p, detailed = true, index = 0 } = Astro.props;
+const colorsLabel = p.colors.length > 1 ? `${p.colors.length} colores` : p.colors[0].name;
+---
+
+<article data-anim="up" class="flex min-w-0 flex-col gap-3.5" style={`--i:${index}`}>
+  <a href={href(p)} aria-label={`${p.name}, ${fmt(p.price)}. Ver ficha`} class="group photo-bg relative isolate block aspect-[4/5] overflow-hidden">
+    {detailed && <span class="absolute bottom-3.5 left-3.5 text-[11px] uppercase tracking-[.12em]">Product shot</span>}
+    <img src={unsplash(p.imgs[0], 900)} alt="" loading="lazy" class="ink-img absolute inset-0 size-full object-cover transition-transform duration-400 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]" />
+    <img src={unsplash(p.imgs[1], 900)} alt="" loading="lazy" class="ink-img absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100" />
+    <span class="duo"></span>
+    <span class="absolute left-3 top-3 bg-crema px-2 pb-1 pt-[5px] font-display text-[13px] leading-none text-azul">{p.n}</span>
+    {detailed && p.tag && <span class="absolute right-3 top-3.5 -rotate-4 bg-naranja transition-[rotate] duration-300 ease-out group-hover:rotate-3 px-[9px] py-1.5 text-[11px] font-bold tracking-[.12em] text-[#111]">{p.tag}</span>}
+    <span class="absolute inset-x-0 bottom-0 flex h-12 translate-y-[101%] items-center justify-between bg-lima px-4 text-xs font-bold tracking-[.14em] text-azul transition-transform duration-250 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0">VER PIEZA <span aria-hidden="true">→</span></span>
+  </a>
+  {detailed ? (
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex min-w-0 flex-col gap-2">
+        <h3 class="text-base font-semibold leading-tight"><a href={href(p)} class="hover:underline">{p.name}</a></h3>
+        <div class="flex items-center gap-1.5 text-xs">
+          {p.colors.map((c) => <span class="size-3 rounded-full shadow-[0_0_0_1.5px_#0E287F]" style={`background:${c.bg}`}></span>)}
+          <span class="ml-1">{colorsLabel}</span>
+        </div>
+      </div>
+      <span class="whitespace-nowrap text-base font-semibold tabular-nums">{fmt(p.price)}</span>
+    </div>
+  ) : (
+    <div class="flex justify-between gap-3 text-base font-semibold">
+      <span>{p.name}</span><span class="whitespace-nowrap tabular-nums">{fmt(p.price)}</span>
+    </div>
+  )}
+</article>

@@ -1,0 +1,30 @@
+<section id="newsletter" data-screen-label="Newsletter" aria-labelledby="nl-title" class="relative overflow-hidden bg-lima px-[clamp(20px,3vw,40px)] py-[clamp(64px,9vw,128px)] text-azul">
+  <span aria-hidden="true" class="pointer-events-none absolute right-0 top-0 h-4/5 w-[min(60vw,760px)]" style="background-image:radial-gradient(circle,#0E287F 1.6px,transparent 2.2px);background-size:11px 11px;-webkit-mask-image:radial-gradient(circle at 100% 0%,#000 0%,transparent 65%);mask-image:radial-gradient(circle at 100% 0%,#000 0%,transparent 65%)"></span>
+  <div class="relative grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] items-end gap-x-[clamp(32px,6vw,96px)] gap-y-10">
+    <h2 id="nl-title" data-anim="clip-up" class="display relative isolate text-[clamp(56px,10vw,164px)] leading-[.85] min-[1020px]:text-[clamp(56px,6.8vw,120px)] tracking-[-.035em]">
+      Enterate<br />
+      <span class="relative inline-block">
+        <span aria-hidden="true" data-anim="draw" style="--i:5" class="fx-brush absolute -left-[.06em] -right-[.12em] top-[58%] -z-10 h-[.34em] -rotate-2 bg-naranja"></span>antes.
+      </span>
+    </h2>
+    <div class="flex max-w-[560px] flex-col gap-6">
+      <p data-anim="up" style="--i:2" class="text-[clamp(18px,1.6vw,22px)] font-medium leading-[1.4] text-pretty">Nuevos drops, piezas limitadas y novedades. Sin ruido innecesario.</p>
+
+      <div id="nl-done" hidden role="status" class="flex-col gap-2 border-2 border-azul p-5 [&:not([hidden])]:flex">
+        <span class="display text-2xl leading-none">Listo. Estás adentro.</span>
+        <span class="text-sm leading-normal">Esto es una demostración: no guardamos ni enviamos tu email (<span id="nl-sent"></span>). Para producción falta conectar un proveedor de email.</span>
+        <button type="button" id="nl-reset" class="cursor-pointer self-start py-1.5 text-xs font-bold tracking-[.14em] underline">PROBAR DE NUEVO</button>
+      </div>
+
+      <form id="nl-form" novalidate data-anim="up" style="--i:3" class="flex flex-col gap-2.5">
+        <label for="nl-email" class="text-[11px] font-bold uppercase tracking-[.16em]">Tu email</label>
+        <div class="flex flex-wrap gap-2.5">
+          <input id="nl-email" type="email" inputmode="email" autocomplete="email" placeholder="vos@mail.com" aria-describedby="nl-msg" class="h-14 flex-[1_1_240px] border-2 border-azul bg-crema px-4 text-[17px] text-azul outline-offset-2" />
+          <button type="submit" class="h-14 flex-none cursor-pointer border-2 border-azul bg-azul px-7 text-sm font-bold tracking-[.14em] text-lima transition-[background-color,color,transform] duration-200 ease-out hover:bg-crema hover:text-azul active:scale-[.97]">SUMARME</button>
+        </div>
+        <div id="nl-msg" aria-live="polite" class="flex min-h-5 items-center gap-2 text-sm font-semibold"></div>
+        <span class="text-xs leading-normal">Demo: el formulario valida pero no envía datos a ningún servidor.</span>
+      </form>
+    </div>
+  </div>
+</section>
