@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const label = 'text-[11px] font-bold uppercase tracking-[.14em]';
+---
+
+<Layout title="Pedido confirmado — FUERA®" minimal>
+  <main data-order data-screen-label="Pedido" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <div data-order-none hidden class="flex flex-col items-start gap-5 border-2 border-azul p-[clamp(24px,4vw,48px)]">
+      <p class="display text-[clamp(28px,4vw,52px)] leading-[.95]">No hay ningún pedido.</p>
+      <p class="max-w-[40ch] text-base leading-normal">Los pedidos de la demo duran lo que dura la pestaña.</p>
+      <a href="/shop/" class="btn-lima h-12 px-5">VER EL SHOP <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div data-order-ok hidden>
+      <header class="mb-8 flex flex-col gap-4 border-b-2 border-azul pb-6">
+        <span class="eyebrow">Pedido <span data-o-id></span></span>
+        <h1 tabindex="-1" class="display text-[clamp(44px,8vw,128px)] leading-[.86] tracking-[-.035em] outline-none">Pedido<br />confirmado.</h1>
+        <p class="max-w-[48ch] text-base leading-normal text-pretty">Gracias, <span data-o-name class="font-semibold"></span>. Te mandaríamos la confirmación a <span data-o-email class="font-semibold"></span>.</p>
+        <p class="self-start bg-lima px-3 py-2 text-[11px] font-bold uppercase tracking-[.12em]">Demo — no se procesó ningún pago ni se enviará nada</p>
+      </header>
+
+      <div class="grid grid-cols-1 items-start gap-[clamp(28px,4vw,72px)] min-[900px]:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+        <ul data-o-lines class="m-0 flex list-none flex-col"></ul>
+        <div class="flex flex-col gap-6 border-2 border-azul p-5">
+          <dl class="flex flex-col gap-4 text-sm">
+            <div class="flex flex-col gap-1"><dt class={label}>Envío a</dt><dd data-o-address class="break-words"></dd></div>
+            <div class="flex flex-col gap-1"><dt class={label}>Método de envío</dt><dd data-o-ship></dd></div>
+            <div class="flex flex-col gap-1"><dt class={label}>Pago</dt><dd data-o-pay></dd></div>
+          </dl>
+          <dl class="flex flex-col gap-2 border-t-2 border-azul pt-4 text-sm">
+            <div class="flex justify-between"><dt>Subtotal</dt><dd data-o-subtotal class="tabular-nums"></dd></div>
+            <div class="flex justify-between"><dt>Envío</dt><dd data-o-shipcost class="tabular-nums"></dd></div>
+            <div class="flex items-baseline justify-between pt-2"><dt class={label}>Total</dt><dd data-o-total class="font-display text-[26px] tabular-nums"></dd></div>
+          </dl>
+          <a href="/shop/" class="btn-lima h-14 justify-between px-5">SEGUIR COMPRANDO <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <template id="o-line">
+      <li class="grid grid-cols-[76px_1fr_auto] items-center gap-4 border-b border-azul/25 py-4 first:pt-0">
+        <span class="relative isolate block h-[95px] w-[76px] overflow-hidden bg-azul/8">
+          <img data-ol-img alt="" class="ink-img absolute inset-0 size-full object-cover" />
+          <span class="duo"></span>
+        </span>
+        <span class="flex min-w-0 flex-col gap-1"><span data-ol-name class="text-[15px] font-semibold leading-tight"></span><span data-ol-meta class="text-xs"></span></span>
+        <span data-ol-total class="text-[15px] font-semibold tabular-nums"></span>
+      </li>
+    </template>
+  </main>
+</Layout>
+
+<script>
+  import { ORDER_KEY, fmt, photo, type Order } from '../scripts/cart-store';
+
+  const root = document.querySelector<HTMLElement>('[data-order]')!;
+  const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+
+  // Session storage is user-controlled: only trust it if it has the shape we wrote.
+  function readOrder(): Order | null {
+    try {
+      const o = JSON.parse(sessionStorage.getItem(ORDER_KEY) || 'null');
+      const ok = o && typeof o.id === 'string' && Array.isArray(o.lines) && o.lines.length > 0 && typeof o.total === 'number' && o.lines.every((l: Order['lines'][number]) => typeof l.name === 'string' && Number.isFinite(l.qty) && Number.isFinite(l.price));
+      return ok ? o : null;
+    } catch {
+      return null;
+    }
+  }
+
+  const order = readOrder();
+  if (!order) {
+    $('[data-order-none]').hidden = false;
+  } else {
+    $('[data-order-ok]').hidden = false;
+    $('[data-o-id]').textContent = order.id;
+    $('[data-o-name]').textContent = order.name;
+    $('[data-o-email]').textContent = order.email;
+    $('[data-o-address]').textContent = order.address;
+    $('[data-o-ship]').textContent = order.shipping.label;
+    $('[data-o-pay]').textContent = order.payment;
+    $('[data-o-subtotal]').textContent = fmt(order.subtotal);
+    $('[data-o-shipcost]').textContent = order.shipping.cost === 0 ? 'Gratis' : fmt(order.shipping.cost);
+    $('[data-o-total]').textContent = fmt(order.total);
+
+    const list = $('[data-o-lines]');
+    const tpl = $<HTMLTemplateElement>('#o-line');
+    for (const l of order.lines) {
+      const node = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement;
+      node.querySelector<HTMLImageElement>('[data-ol-img]')!.src = photo(String(l.img).replace(/[^\w-]/g, ''), 300);
+      node.querySelector('[data-ol-name]')!.textContent = l.name;
+      node.querySelector('[data-ol-meta]')!.textContent = `${l.color} · Talle ${l.size} · ${l.qty} × ${fmt(l.price)}`;
+      node.querySelector('[data-ol-total]')!.textContent = fmt(l.price * l.qty);
+      list.append(node);
+    }
+    root.querySelector<HTMLElement>('h1')!.focus({ preventScroll: true });
+  }
+</script>

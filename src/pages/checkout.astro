@@ -1,0 +1,297 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const FREE_SHIPPING_FROM = 120000;
+
+const fields = [
+  { name: 'email', label: 'Email', type: 'email', auto: 'email', wide: true },
+  { name: 'nombre', label: 'Nombre', type: 'text', auto: 'given-name' },
+  { name: 'apellido', label: 'Apellido', type: 'text', auto: 'family-name' },
+  { name: 'direccion', label: 'Calle y número', type: 'text', auto: 'address-line1', wide: true },
+  { name: 'piso', label: 'Piso / depto (opcional)', type: 'text', auto: 'address-line2', optional: true, wide: true },
+  { name: 'ciudad', label: 'Ciudad', type: 'text', auto: 'address-level2' },
+  { name: 'provincia', label: 'Provincia', type: 'text', auto: 'address-level1' },
+  { name: 'cp', label: 'Código postal', type: 'text', auto: 'postal-code', pattern: '\\d{4}', inputmode: 'numeric', hint: '4 dígitos' },
+  { name: 'telefono', label: 'Teléfono (opcional)', type: 'tel', auto: 'tel', optional: true },
+];
+
+const shipping = [
+  { id: 'standard', label: 'Envío estándar', note: '3 a 5 días hábiles', cost: 4500, freeOver: true },
+  { id: 'express', label: 'Envío express', note: '24 a 48 horas', cost: 8000 },
+  { id: 'pickup', label: 'Retiro en el showroom', note: 'Gratis · Lista en 24 horas', cost: 0 },
+];
+
+const payments = [
+  { id: 'card', label: 'Tarjeta de crédito o débito' },
+  { id: 'transfer', label: 'Transferencia bancaria' },
+  { id: 'wallet', label: 'Billetera virtual' },
+];
+
+const label = 'text-[11px] font-bold uppercase tracking-[.14em]';
+const input = 'h-12 w-full border-2 border-azul bg-crema px-3.5 text-base aria-[invalid=true]:border-naranja';
+const radio = 'flex cursor-pointer items-center gap-3 border-2 border-azul p-4 has-[:checked]:bg-azul has-[:checked]:text-crema';
+const stepBtn = 'btn-lima h-14 justify-between px-5 disabled:cursor-wait disabled:opacity-60';
+---
+
+<Layout title="Checkout — FUERA®" minimal>
+  <main data-checkout data-free-from={FREE_SHIPPING_FROM} data-screen-label="Checkout" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+      <a href="/shop/" class="hover:underline">Shop</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Checkout</span>
+    </nav>
+
+    <header class="mb-8 flex flex-wrap items-end justify-between gap-x-12 gap-y-4 border-b-2 border-azul pb-6">
+      <h1 class="display text-[clamp(44px,7vw,112px)] leading-[.88] tracking-[-.03em]">Checkout</h1>
+      <ol class="flex gap-6 text-xs font-bold uppercase tracking-[.14em]" aria-label="Pasos">
+        <li data-stepper="1" aria-current="step" class="aria-[current=step]:underline aria-[current=step]:decoration-2 aria-[current=step]:underline-offset-6 [&:not([aria-current])]:opacity-50">01 Datos y envío</li>
+        <li data-stepper="2" class="aria-[current=step]:underline aria-[current=step]:decoration-2 aria-[current=step]:underline-offset-6 [&:not([aria-current])]:opacity-50">02 Pago</li>
+      </ol>
+    </header>
+
+    <div data-co-empty hidden class="flex flex-col items-start gap-5 border-2 border-azul p-[clamp(24px,4vw,48px)]">
+      <p class="display text-[clamp(28px,4vw,52px)] leading-[.95]">Tu carrito está vacío.</p>
+      <p class="max-w-[40ch] text-base leading-normal">Agregá alguna pieza para poder avanzar.</p>
+      <a href="/shop/" class="btn-lima h-12 px-5">VER EL SHOP <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div data-co-main class="grid grid-cols-1 items-start gap-[clamp(28px,4vw,72px)] min-[900px]:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <form data-co-form novalidate class="flex min-w-0 flex-col gap-8">
+        <div class="bg-lima px-4 py-[9px] text-[11px] font-bold uppercase tracking-[.12em]">Ecommerce conceptual — no se piden datos de tarjeta ni se procesan pagos</div>
+
+        <section data-step="1" aria-labelledby="s1-title" class="flex flex-col gap-8">
+          <h2 id="s1-title" tabindex="-1" class="display text-[clamp(26px,3vw,40px)] leading-[.95] outline-none">Datos y envío</h2>
+          <div class="grid grid-cols-1 gap-x-4 gap-y-5 min-[560px]:grid-cols-2">
+            {fields.map((f) => (
+              <label class={`flex flex-col gap-2 ${f.wide ? 'min-[560px]:col-span-2' : ''}`}>
+                <span class={label}>{f.label}</span>
+                <input
+                  class={input}
+                  name={f.name}
+                  type={f.type}
+                  autocomplete={f.auto}
+                  required={!f.optional}
+                  pattern={f.pattern}
+                  inputmode={f.inputmode}
+                  aria-describedby={`err-${f.name}`}
+                />
+                <span id={`err-${f.name}`} data-err class="min-h-4 text-xs font-semibold text-naranja"></span>
+              </label>
+            ))}
+          </div>
+
+          <fieldset class="flex flex-col gap-3">
+            <legend class={`${label} mb-3`}>Método de envío</legend>
+            {shipping.map((s, i) => (
+              <label class={radio}>
+                <input type="radio" name="shipping" value={s.id} data-cost={s.cost} data-free-over={s.freeOver ? '' : null} data-label={s.label} checked={i === 0} class="size-4 accent-lima" />
+                <span class="flex flex-1 flex-col"><span class="text-sm font-bold">{s.label}</span><span class="text-xs opacity-80">{s.note}</span></span>
+                <span data-ship-price class="text-sm font-bold tabular-nums"></span>
+              </label>
+            ))}
+            <p class="text-xs">Envío estándar gratis desde $120.000.</p>
+          </fieldset>
+
+          <button type="submit" data-next class={stepBtn}>CONTINUAR AL PAGO <span aria-hidden="true">→</span></button>
+        </section>
+
+        <section data-step="2" hidden aria-labelledby="s2-title" class="flex flex-col gap-8">
+          <h2 id="s2-title" tabindex="-1" class="display text-[clamp(26px,3vw,40px)] leading-[.95] outline-none">Pago</h2>
+
+          <div class="flex items-start justify-between gap-4 border-2 border-azul p-4 text-sm">
+            <dl class="flex min-w-0 flex-col gap-1">
+              <dt class={label}>Enviar a</dt>
+              <dd data-review-address class="break-words"></dd>
+              <dd data-review-email class="break-words text-xs"></dd>
+            </dl>
+            <button type="button" data-back class="link-u flex-none py-1 text-xs font-bold uppercase tracking-[.14em]">Editar</button>
+          </div>
+
+          <fieldset class="flex flex-col gap-3">
+            <legend class={`${label} mb-3`}>Método de pago</legend>
+            {payments.map((m, i) => (
+              <label class={radio}>
+                <input type="radio" name="payment" value={m.id} data-label={m.label} checked={i === 0} class="size-4 accent-lima" />
+                <span class="text-sm font-bold">{m.label}</span>
+              </label>
+            ))}
+            <p class="text-xs">Es una demo: al confirmar se simula el pago y se genera un pedido de ejemplo.</p>
+          </fieldset>
+
+          <button type="submit" data-pay class={stepBtn}><span data-pay-label>CONFIRMAR PEDIDO</span> <span aria-hidden="true">→</span></button>
+        </section>
+      </form>
+
+      <aside aria-labelledby="sum-title" class="flex flex-col gap-5 border-2 border-azul p-5 min-[900px]:sticky min-[900px]:top-24">
+        <h2 id="sum-title" class="display text-[22px] tracking-[-.02em]">Tu pedido</h2>
+        <ul data-sum-lines class="m-0 flex list-none flex-col"></ul>
+        <dl class="flex flex-col gap-2 border-t-2 border-azul pt-4 text-sm">
+          <div class="flex justify-between"><dt>Subtotal</dt><dd data-sum-subtotal class="tabular-nums"></dd></div>
+          <div class="flex justify-between"><dt>Envío</dt><dd data-sum-shipping class="tabular-nums"></dd></div>
+          <div class="flex items-baseline justify-between pt-2"><dt class="text-xs font-bold uppercase tracking-[.14em]">Total</dt><dd data-sum-total class="font-display text-[26px] tabular-nums"></dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <template id="sum-line">
+      <li class="grid grid-cols-[56px_1fr_auto] items-center gap-3 border-b border-azul/25 py-3 first:pt-0">
+        <span class="relative isolate block h-[70px] w-[56px] overflow-hidden bg-azul/8">
+          <img data-s-img alt="" class="ink-img absolute inset-0 size-full object-cover" />
+          <span class="duo"></span>
+          <span data-s-qty class="absolute right-0 top-0 z-10 bg-lima px-1.5 text-[11px] font-bold tabular-nums"></span>
+        </span>
+        <span class="flex min-w-0 flex-col gap-1"><span data-s-name class="text-sm font-semibold leading-tight"></span><span data-s-meta class="text-xs"></span></span>
+        <span data-s-total class="text-sm font-semibold tabular-nums"></span>
+      </li>
+    </template>
+  </main>
+</Layout>
+
+<script>
+  import { ORDER_KEY, clearCart, fmt, loadCart, photo, readCatalog, type Order } from '../scripts/cart-store';
+
+  const root = document.querySelector<HTMLElement>('[data-checkout]')!;
+  const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+  const $$ = <T extends Element = HTMLElement>(sel: string) => [...root.querySelectorAll<T>(sel)];
+
+  const catalog = readCatalog();
+  const freeFrom = Number(root.dataset.freeFrom);
+  const form = $<HTMLFormElement>('[data-co-form]');
+  const panels = $$('[data-step]');
+  const steppers = $$('[data-stepper]');
+  const shipRadios = $$<HTMLInputElement>('input[name="shipping"]');
+  const payBtn = $<HTMLButtonElement>('[data-pay]');
+  let step: 1 | 2 = 1;
+  let paying = false;
+  let cart = loadCart(catalog);
+
+  const subtotal = () => cart.reduce((a, l) => a + catalog[l.slug].price * l.qty, 0);
+  const shipCost = (r: HTMLInputElement) => (r.hasAttribute('data-free-over') && subtotal() >= freeFrom ? 0 : Number(r.dataset.cost));
+  const selectedShip = () => shipRadios.find((r) => r.checked)!;
+
+  function renderSummary() {
+    const empty = cart.length === 0;
+    $('[data-co-empty]').hidden = !empty;
+    $('[data-co-main]').hidden = empty;
+    if (empty) return;
+
+    const list = $('[data-sum-lines]');
+    const tpl = $<HTMLTemplateElement>('#sum-line');
+    list.replaceChildren();
+    for (const l of cart) {
+      const p = catalog[l.slug];
+      const c = p.colors.find((x) => x.id === l.color) ?? p.colors[0];
+      const node = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement;
+      const img = node.querySelector<HTMLImageElement>('[data-s-img]')!;
+      img.src = photo(p.img, 200);
+      node.querySelector('[data-s-qty]')!.textContent = String(l.qty);
+      node.querySelector('[data-s-name]')!.textContent = p.name;
+      node.querySelector('[data-s-meta]')!.textContent = `${c.name} · Talle ${l.size}`;
+      node.querySelector('[data-s-total]')!.textContent = fmt(p.price * l.qty);
+      list.append(node);
+    }
+    shipRadios.forEach((r) => {
+      const cost = shipCost(r);
+      r.closest('label')!.querySelector('[data-ship-price]')!.textContent = cost === 0 ? 'Gratis' : fmt(cost);
+    });
+    const cost = shipCost(selectedShip());
+    $('[data-sum-subtotal]').textContent = fmt(subtotal());
+    $('[data-sum-shipping]').textContent = cost === 0 ? 'Gratis' : fmt(cost);
+    $('[data-sum-total]').textContent = fmt(subtotal() + cost);
+  }
+
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+  const value = (name: string) => field(name).value.trim();
+
+  function messageFor(el: HTMLInputElement) {
+    if (el.validity.valueMissing) return 'Completá este campo.';
+    if (el.validity.typeMismatch) return 'Ingresá un email válido.';
+    if (el.validity.patternMismatch) return 'El código postal tiene 4 dígitos.';
+    return 'Revisá este campo.';
+  }
+
+  function validateStep1() {
+    let first: HTMLInputElement | null = null;
+    for (const el of $$<HTMLInputElement>('[data-step="1"] input:not([type="radio"])')) {
+      el.value = el.value.trim();
+      const ok = el.checkValidity();
+      el.setAttribute('aria-invalid', String(!ok));
+      $(`#err-${el.name}`).textContent = ok ? '' : messageFor(el);
+      if (!ok) first ??= el;
+    }
+    first?.focus();
+    return !first;
+  }
+
+  function go(next: 1 | 2) {
+    step = next;
+    panels.forEach((p) => (p.hidden = p.dataset.step !== String(step)));
+    steppers.forEach((s) => s.toggleAttribute('aria-current', s.dataset.stepper === String(step)));
+    steppers.forEach((s) => s.dataset.stepper === String(step) && s.setAttribute('aria-current', 'step'));
+    if (step === 2) {
+      const extra = value('piso');
+      $('[data-review-address]').textContent = `${value('nombre')} ${value('apellido')} — ${value('direccion')}${extra ? ', ' + extra : ''}, ${value('ciudad')}, ${value('provincia')} (${value('cp')})`;
+      $('[data-review-email]').textContent = value('email');
+    }
+    window.scrollTo({ top: 0 });
+    $<HTMLElement>(`#s${step}-title`).focus({ preventScroll: true });
+  }
+
+  // Clear a field's error as soon as the user fixes it.
+  $$<HTMLInputElement>('[data-step="1"] input:not([type="radio"])').forEach((el) =>
+    el.addEventListener('input', () => {
+      if (el.getAttribute('aria-invalid') === 'true' && el.checkValidity()) {
+        el.setAttribute('aria-invalid', 'false');
+        $(`#err-${el.name}`).textContent = '';
+      }
+    }),
+  );
+
+  shipRadios.forEach((r) => r.addEventListener('change', renderSummary));
+  $('[data-back]').addEventListener('click', () => go(1));
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (step === 1) {
+      if (validateStep1()) go(2);
+      return;
+    }
+    if (paying || cart.length === 0) return;
+    paying = true;
+    payBtn.disabled = true;
+    $('[data-pay-label]').textContent = 'PROCESANDO…';
+
+    // Simulated payment: build the order from the current cart, no network involved.
+    setTimeout(() => {
+      const ship = selectedShip();
+      const cost = shipCost(ship);
+      const extra = value('piso');
+      const order: Order = {
+        id: 'FU-' + String(Math.floor(Math.random() * 900000) + 100000),
+        email: value('email'),
+        name: `${value('nombre')} ${value('apellido')}`,
+        address: `${value('direccion')}${extra ? ', ' + extra : ''}, ${value('ciudad')}, ${value('provincia')} (${value('cp')})`,
+        phone: value('telefono'),
+        shipping: { label: ship.dataset.label!, cost },
+        payment: $$<HTMLInputElement>('input[name="payment"]').find((r) => r.checked)!.dataset.label!,
+        lines: cart.map((l) => {
+          const p = catalog[l.slug];
+          return { name: p.name, color: (p.colors.find((x) => x.id === l.color) ?? p.colors[0]).name, size: l.size, qty: l.qty, price: p.price, img: p.img };
+        }),
+        subtotal: subtotal(),
+        total: subtotal() + cost,
+      };
+      try { sessionStorage.setItem(ORDER_KEY, JSON.stringify(order)); } catch {}
+      clearCart();
+      location.assign('/order/');
+    }, 1200);
+  });
+
+  // The cart drawer stays usable on this page: keep the summary in sync with it.
+  window.addEventListener('cart:change', () => {
+    if (paying) return;
+    cart = loadCart(catalog);
+    renderSummary();
+  });
+
+  renderSummary();
+</script>

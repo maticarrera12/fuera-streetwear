@@ -11,8 +11,10 @@ import { PRODUCTS } from '../data/products';
 
 interface Props {
   title?: string;
+  // Checkout-style pages drop the newsletter band to keep the flow focused.
+  minimal?: boolean;
 }
-const { title = 'FUERA® — Independent Streetwear · Drop 001' } = Astro.props;
+const { title = 'FUERA® — Independent Streetwear · Drop 001', minimal = false } = Astro.props;
 const ogImage = 'https://images.unsplash.com/photo-1649114383220-c4f0f0dbafbe?auto=format&fit=crop&w=1200&q=70';
 const catalog = Object.fromEntries(
   PRODUCTS.map((p) => [p.slug, { name: p.name, price: p.price, img: p.imgs[0], colors: p.colors.map((c) => ({ id: c.id, name: c.name })) }]),
@@ -50,7 +52,7 @@ const catalog = Object.fromEntries(
     <Header />
     <div id="main"></div>
     <slot />
-    <Newsletter />
+    {!minimal && <Newsletter />}
     <Footer />
     <MobileMenu />
     <SearchDialog />
