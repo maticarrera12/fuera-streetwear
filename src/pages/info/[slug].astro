@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { INFO_PAGES, type InfoPage } from '../../data/legal';
+
+export function getStaticPaths() {
+  return INFO_PAGES.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props as { page: InfoPage };
+const others = INFO_PAGES.filter((p) => p.slug !== page.slug);
+---
+
+<Layout title={`${page.title} — FUERA®`}>
+  <main data-screen-label={page.title} class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+      <a href="/" class="hover:underline">Inicio</a><span aria-hidden="true">/</span>
+      <span aria-current="page">{page.title}</span>
+    </nav>
+
+    <header class="mb-10 flex flex-wrap items-end justify-between gap-x-12 gap-y-4 border-b-2 border-azul pb-6">
+      <h1 class="display max-w-[14ch] text-[clamp(40px,7vw,112px)] leading-[.88] tracking-[-.03em] text-balance">{page.title}</h1>
+      <p class="max-w-[340px] text-base leading-normal text-pretty">{page.intro}</p>
+    </header>
+
+    <div class="grid grid-cols-1 items-start gap-[clamp(32px,5vw,72px)] min-[900px]:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+      <div class="flex max-w-[68ch] flex-col gap-10">
+        {page.sections.map((s, i) => (
+          <section aria-labelledby={`sec-${i}`} class="grid grid-cols-[auto_1fr] gap-x-5 gap-y-3">
+            <span aria-hidden="true" class="font-display text-[28px] leading-none">0{i + 1}</span>
+            <h2 id={`sec-${i}`} class="text-lg font-bold">{s.title}</h2>
+            <div class="col-start-2 flex flex-col gap-3">
+              {s.body.map((p) => <p class="text-[15px] leading-[1.6] text-pretty">{p}</p>)}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <aside aria-labelledby="more-title" class="flex flex-col gap-4 border-2 border-azul p-6 min-[900px]:sticky min-[900px]:top-24">
+        <h2 id="more-title" class="text-[11px] font-bold uppercase tracking-[.14em]">Más información</h2>
+        <ul class="m-0 flex list-none flex-col gap-1 p-0">
+          {others.map((o) => <li><a href={`/info/${o.slug}/`} class="link-u inline-block py-1.5 text-sm font-semibold">{o.title} →</a></li>)}
+          <li><a href="/sizes/" class="link-u inline-block py-1.5 text-sm font-semibold">Guía de talles →</a></li>
+        </ul>
+        <p class="border-t border-azul/30 pt-4 text-xs leading-normal">FUERA® es una marca conceptual: este contenido es de ejemplo y no tiene validez legal.</p>
+      </aside>
+    </div>
+  </main>
+</Layout>

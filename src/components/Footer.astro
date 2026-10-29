@@ -3,6 +3,7 @@ const col = 'flex flex-col gap-1 text-[13px] font-semibold tracking-[.14em]';
 const head = 'mb-2 text-[11px] tracking-[.16em] text-lima';
 const link = 'link-u w-fit py-1.5 hover:text-lima';
 const note = 'text-xs font-normal leading-normal tracking-[.02em]';
+import { INFO_PAGES } from '../data/legal';
 ---
 
 <footer class="relative overflow-hidden bg-azul px-[clamp(20px,3vw,40px)] pb-7 pt-14 text-crema">
@@ -20,12 +21,16 @@ const note = 'text-xs font-normal leading-normal tracking-[.02em]';
       <a href="/about/" class={link}>ABOUT</a>
       <a href="/sizes/" class={link}>GUÍA DE TALLES</a>
     </nav>
-    <div data-anim="up" style="--i:2" class={col}>
+    <nav aria-label="Ayuda" data-anim="up" style="--i:2" class={col}>
+      <span class={head}>AYUDA</span>
+      {INFO_PAGES.map((p) => <a href={`/info/${p.slug}/`} class={link}>{p.title.toUpperCase()}</a>)}
+    </nav>
+    <div data-anim="up" style="--i:3" class={col}>
       <span class={head}>SEGUIR</span>
       <a href="#" target="_blank" rel="noopener" class={link}>INSTAGRAM ↗</a>
       <span class={note}>Enlace sin configurar (marca ficticia).</span>
     </div>
-    <div data-anim="up" style="--i:3" class={col}>
+    <div data-anim="up" style="--i:4" class={col}>
       <span class={head}>CONTACTO (DEMO)</span>
       <a href="mailto:hola@fuera.example" class={link + ' tracking-[.04em]'}>hola@fuera.example</a>
       <span class={note}>Dirección de ejemplo, no monitoreada.</span>

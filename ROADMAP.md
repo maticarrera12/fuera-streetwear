@@ -10,4 +10,4 @@ Conceptual streetwear storefront. Goal: make the site feel like a real clothing 
 | 4 | Editorial content: lookbook, About, size guide | Done |
 | 5 | Ecommerce details: loading/error states, 404, wishlist, recently viewed, related products | Pending |
 | 6 | Transitions and micro-interactions (Astro View Transitions) | Pending |
-| 7 | Legal pages and complete footer (shipping, returns, terms) | Pending |
+| 7 | Legal pages and complete footer (shipping, returns, terms) | Done |
