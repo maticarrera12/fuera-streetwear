@@ -1,4 +1,5 @@
 import { MAX_QTY, fmt, loadCart, photo, readCatalog, saveCart, type Line } from './cart-store';
+import './wishlist';
 
 const catalog = readCatalog();
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
@@ -280,3 +281,13 @@ if ('IntersectionObserver' in window) {
 } else {
   reveals.forEach((el) => el.classList.add('is-in'));
 }
+
+/* ---------- Image failure fallback ---------- */
+// A broken image would leave an empty box (or a solid blue duotone); show the striped placeholder instead.
+function markBroken(img: HTMLImageElement) {
+  img.classList.add('img-failed');
+  const frame = img.closest('.photo-bg');
+  if (frame && $$<HTMLImageElement>('img', frame).every((i) => i.classList.contains('img-failed'))) frame.classList.add('is-empty');
+}
+document.addEventListener('error', (e) => e.target instanceof HTMLImageElement && markBroken(e.target), true);
+$$<HTMLImageElement>('img').forEach((img) => img.complete && img.naturalWidth === 0 && img.src && markBroken(img));

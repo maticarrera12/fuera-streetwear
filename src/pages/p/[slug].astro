@@ -10,7 +10,9 @@ export function getStaticPaths() {
 const { p } = Astro.props as { p: Product };
 const gallery = p.imgs.map((id) => unsplash(id, 1200));
 const altTxt = ['Look completo', 'Detalle en uso', 'En contexto'];
-const recs = PRODUCTS.filter((x) => x.slug !== p.slug);
+// Same category first, then the rest, so the strip always has four pieces.
+const others = PRODUCTS.filter((x) => x.slug !== p.slug);
+const recs = [...others.filter((x) => x.category === p.category), ...others.filter((x) => x.category !== p.category)].slice(0, 4);
 const single = p.sizes.length === 1;
 const label = 'text-xs font-bold uppercase tracking-[.14em]';
 const summary = 'flex cursor-pointer list-none justify-between py-[18px] text-xs font-bold uppercase tracking-[.14em]';
@@ -116,11 +118,20 @@ const summary = 'flex cursor-pointer list-none justify-between py-[18px] text-xs
     <section aria-labelledby="rec-title" class="mt-[clamp(80px,10vw,144px)]">
       <div class="mb-8 flex flex-wrap items-end justify-between gap-4 border-b-2 border-azul pb-5">
         <h2 id="rec-title" class="display text-[clamp(32px,4.4vw,64px)] leading-[.9] tracking-[-.03em]">Completá<br />el uniforme</h2>
-        <a href="/#drop" class="py-2 text-xs font-bold tracking-[.14em] hover:text-naranja">VER TODO DROP 001 →</a>
+        <a href="/shop/" class="py-2 text-xs font-bold tracking-[.14em] hover:text-naranja">VER TODO EL SHOP →</a>
       </div>
       <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-[clamp(14px,1.6vw,24px)] gap-y-8">
         {recs.map((r, i) => <ProductCard product={r} detailed={false} index={i} />)}
       </div>
+    </section>
+
+    <section data-collection-wrap hidden aria-labelledby="recent-title" class="mt-[clamp(64px,8vw,112px)]">
+      <div class="mb-8 border-b-2 border-azul pb-5">
+        <h2 id="recent-title" class="display text-[clamp(28px,3.6vw,52px)] leading-[.9] tracking-[-.03em]">Visto recientemente</h2>
+      </div>
+      <ul data-collection="recent" data-exclude={p.slug} class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-[clamp(14px,1.6vw,24px)] gap-y-8 p-0">
+        {others.map((r) => <li data-slug={r.slug} hidden><ProductCard product={r} detailed={false} /></li>)}
+      </ul>
     </section>
   </main>
 </Layout>

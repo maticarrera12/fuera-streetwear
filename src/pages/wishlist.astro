@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { PRODUCTS } from '../data/products';
+---
+
+<Layout title="Favoritos — FUERA®">
+  <main data-screen-label="Favoritos" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+      <a href="/" class="hover:underline">Inicio</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Favoritos</span>
+    </nav>
+
+    <header class="mb-8 flex flex-wrap items-end justify-between gap-x-12 gap-y-4 border-b-2 border-azul pb-6">
+      <h1 class="display text-[clamp(44px,8vw,128px)] leading-[.86] tracking-[-.035em]">Favoritos</h1>
+      <p class="max-w-[340px] text-base leading-normal text-pretty">Las piezas que guardaste. Se conservan en este navegador.</p>
+    </header>
+
+    <div data-collection-wrap>
+      <ul data-collection="wishlist" class="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-x-[clamp(14px,1.6vw,24px)] gap-y-[clamp(28px,3vw,40px)] p-0">
+        {PRODUCTS.map((p, i) => <li data-slug={p.slug} hidden><ProductCard product={p} index={i} /></li>)}
+      </ul>
+      <div data-collection-empty class="flex flex-col items-start gap-5 border-2 border-azul p-[clamp(24px,4vw,48px)]">
+        <p class="display text-[clamp(28px,4vw,52px)] leading-[.95]">Todavía no guardaste nada.</p>
+        <p class="max-w-[40ch] text-base leading-normal">Tocá el corazón en cualquier pieza para sumarla acá.</p>
+        <a href="/shop/" class="btn-lima h-12 px-5">VER EL SHOP <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </main>
+</Layout>

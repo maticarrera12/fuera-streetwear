@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 — FUERA®" minimal>
+  <main data-screen-label="404" class="relative overflow-hidden bg-azul px-[clamp(20px,3vw,40px)] pb-[clamp(72px,10vw,160px)] pt-[clamp(48px,7vw,112px)] text-crema">
+    <span aria-hidden="true" class="pointer-events-none absolute right-0 top-0 h-full w-[60vw]" style="background-image:radial-gradient(circle,#F3E9D6 2.2px,transparent 2.8px);background-size:14px 14px;-webkit-mask-image:radial-gradient(circle at 100% 20%,#000 0%,transparent 62%);mask-image:radial-gradient(circle at 100% 20%,#000 0%,transparent 62%)"></span>
+    <span aria-hidden="true" class="parallax fx-stain pointer-events-none absolute rounded-full bg-naranja" style="right:clamp(20px,9vw,160px);top:clamp(40px,8vw,120px);width:clamp(56px,9vw,150px);height:clamp(56px,9vw,150px)"></span>
+    <div class="relative flex flex-col items-start gap-6">
+      <span class="eyebrow">Error 404</span>
+      <h1 class="display text-[clamp(88px,22vw,360px)] leading-[.8] tracking-[-.04em] text-lima">404</h1>
+      <p class="display text-[clamp(28px,4.5vw,64px)] leading-[.92]">Te saliste<br />del mapa.</p>
+      <p class="max-w-[40ch] text-[17px] leading-normal text-pretty">Esta página no existe o cambió de lugar. Fuera de serie, pero no de este sitio.</p>
+      <div class="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <a href="/shop/" class="btn-lima h-14 px-6">VER EL SHOP <span aria-hidden="true">→</span></a>
+        <a href="/" class="link-u py-1.5 text-[13px] font-bold tracking-[.14em]">VOLVER AL INICIO</a>
+      </div>
+    </div>
+    <span aria-hidden="true" class="grain"></span>
+  </main>
+</Layout>
