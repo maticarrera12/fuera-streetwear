@@ -70,6 +70,12 @@
     mix-blend-mode: multiply;
     pointer-events: none;
   }
+  .img-failed {
+    visibility: hidden;
+  }
+  .is-empty .duo {
+    display: none;
+  }
   .photo-bg {
     background: repeating-linear-gradient(135deg, rgb(14 40 127 / 0.08) 0 2px, transparent 2px 11px);
   }
