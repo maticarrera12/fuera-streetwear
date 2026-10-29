@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { IMG } from '../data/products';
+
+const values = [
+  ['Algodón pesado', 'Telas de 220 a 400 g/m² que mantienen la forma lavado tras lavado. Menos prendas, más años.'],
+  ['Tiradas cortas', 'Producimos por drops limitados. Si se agota, se agota: preferimos eso a sobrar.'],
+  ['Sin permiso', 'Calces amplios, gráficos directos y ninguna regla sobre cómo llevarlo.'],
+];
+const facts = [['2026', 'Primer drop'], ['08', 'Piezas en Drop 001'], ['100%', 'Algodón en las remeras']];
+---
+
+<Layout title="Nosotros — FUERA®">
+  <main data-screen-label="Nosotros" class="bg-crema text-azul">
+    <section class="relative overflow-hidden bg-azul px-[clamp(20px,3vw,40px)] pb-[clamp(56px,8vw,112px)] pt-5 text-crema">
+      <nav aria-label="Ruta" class="a-rise mb-[clamp(36px,5vw,72px)] flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+        <a href="/" class="hover:underline">Inicio</a><span aria-hidden="true">/</span>
+        <span aria-current="page">Nosotros</span>
+      </nav>
+      <span class="eyebrow mb-5 block">Independent by design</span>
+      <h1 class="display relative text-[clamp(50px,10vw,172px)] leading-[.86] tracking-[-.035em] text-lima">No se trata<br />de encajar.</h1>
+      <p class="mt-[clamp(32px,5vw,64px)] max-w-[640px] text-[clamp(20px,2.2vw,30px)] font-medium leading-[1.25] text-pretty">FUERA nace de una idea simple: vestirse no debería ser una forma de pedir permiso.</p>
+      <span aria-hidden="true" class="grain"></span>
+    </section>
+
+    <section aria-labelledby="story-title" class="grid grid-cols-1 items-start gap-[clamp(28px,4vw,72px)] px-[clamp(20px,3vw,40px)] py-[clamp(56px,8vw,120px)] min-[900px]:grid-cols-12">
+      <figure class="min-[900px]:col-span-5">
+        <div data-anim="wipe-l" class="photo-bg relative isolate aspect-[4/5] overflow-hidden">
+          <img src={IMG.edB} alt="Retrato de una joven con remera de color" loading="lazy" class="ink-img absolute inset-0 size-full object-cover" />
+          <span class="duo"></span>
+        </div>
+      </figure>
+      <div class="flex flex-col gap-6 min-[900px]:col-[7/13]">
+        <h2 id="story-title" class="display text-[clamp(32px,4vw,56px)] leading-[.95]">Prendas para todos los días</h2>
+        <p class="text-[17px] leading-[1.6] text-pretty">Empezamos con una pregunta: ¿por qué la ropa cotidiana tiene que ser aburrida o gritar de más? Drop 001 es la respuesta: remeras, buzos y accesorios con cuerpo, hechos para durar y con gráficos que dicen justo lo que tienen que decir.</p>
+        <p class="text-[17px] leading-[1.6] text-pretty">No seguimos temporadas. Hacemos tiradas cortas, las agotamos y pasamos a lo siguiente.</p>
+        <dl class="mt-4 grid grid-cols-3 gap-4 border-t-2 border-azul pt-6">
+          {facts.map(([n, l]) => <div class="flex flex-col gap-1"><dt class="order-2 text-[11px] font-semibold uppercase tracking-[.14em]">{l}</dt><dd class="display text-[clamp(28px,3.4vw,48px)] leading-none">{n}</dd></div>)}
+        </dl>
+      </div>
+    </section>
+
+    <section aria-labelledby="values-title" class="border-t-2 border-azul px-[clamp(20px,3vw,40px)] py-[clamp(56px,8vw,120px)]">
+      <h2 id="values-title" class="display mb-10 text-[clamp(32px,4vw,56px)] leading-[.95]">Lo que defendemos</h2>
+      <ul class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-[clamp(16px,2vw,32px)] p-0">
+        {values.map(([t, d], i) => (
+          <li data-anim="up" style={`--i:${i}`} class="flex flex-col gap-3 border-2 border-azul p-6">
+            <span class="font-display text-[clamp(32px,4vw,56px)] leading-none">0{i + 1}</span>
+            <h3 class="text-lg font-bold">{t}</h3>
+            <p class="text-[15px] leading-normal">{d}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-12 flex flex-wrap gap-4">
+        <a href="/shop/" class="btn-lima h-14 px-6">VER EL SHOP <span aria-hidden="true">→</span></a>
+        <a href="/lookbook/" class="link-u self-center py-1.5 text-[13px] font-bold tracking-[.14em]">VER LA CAMPAÑA →</a>
+      </div>
+      <p class="mt-10 text-xs tracking-[.04em]">FUERA® es una marca ficticia creada para un proyecto de portfolio.</p>
+    </section>
+  </main>
+</Layout>
