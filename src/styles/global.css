@@ -234,3 +234,36 @@
   #cart[data-open] { opacity: 1; }
   button:active, a:active { transform: none !important; }
 }
+
+/* Page transitions: native cross-document View Transitions.
+   Each page is still a full load, so ui.ts re-initialises on every navigation.
+   Browsers without support (or with reduced motion) simply navigate as before. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  /* The shell is identical on every page: keep it still instead of cross-fading it. */
+  ::view-transition-group(announcement),
+  ::view-transition-group(site-header) {
+    animation-duration: 0s;
+  }
+  ::view-transition-old(announcement),
+  ::view-transition-new(announcement),
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-old(root) {
+    animation: vt-out 140ms var(--ease-out) both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-in 280ms var(--ease-out) 60ms both;
+  }
+  @keyframes vt-out {
+    to { opacity: 0; }
+  }
+  @keyframes vt-in {
+    from { opacity: 0; transform: translateY(10px); }
+  }
+}
