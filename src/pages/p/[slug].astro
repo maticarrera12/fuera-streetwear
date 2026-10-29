@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { PRODUCTS, fmt, unsplash, type Product } from '../../data/products';
+import { CATEGORIES, PRODUCTS, fmt, unsplash, type Product } from '../../data/products';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -19,8 +19,8 @@ const summary = 'flex cursor-pointer list-none justify-between py-[18px] text-xs
 <Layout title={`${p.name} — FUERA®`}>
   <main data-pdp data-slug={p.slug} data-price={p.price} data-single-size={single ? p.sizes[0] : ''} data-screen-label="Producto" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
     <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
-      <a href="/#drop" class="hover:underline">Shop</a><span aria-hidden="true">/</span>
-      <a href="/#drop" class="hover:underline">Drop 001</a><span aria-hidden="true">/</span>
+      <a href="/shop/" class="hover:underline">Shop</a><span aria-hidden="true">/</span>
+      <a href={`/shop/?cat=${p.category}`} class="hover:underline">{CATEGORIES.find((c) => c.id === p.category)?.label}</a><span aria-hidden="true">/</span>
       <span aria-current="page">{p.name}</span>
     </nav>
 

@@ -5,6 +5,7 @@ import Marquee from '../components/Marquee.astro';
 import ProductCard from '../components/ProductCard.astro';
 import { IMG, PRODUCTS } from '../data/products';
 
+const featured = PRODUCTS.slice(0, 4);
 const dots = 'pointer-events-none absolute';
 const sq = 'aspect-square w-[clamp(22px,4.2vw,60px)]';
 const frame = 'photo-bg relative isolate overflow-hidden';
@@ -24,13 +25,14 @@ const cap = 'text-[11px] font-semibold uppercase tracking-[.14em]';
         <h2 id="drop-title" data-anim="clip-up" class="display text-[clamp(42px,7vw,112px)] leading-[.88] tracking-[-.03em]">Drop 001 —<br />Fuera de serie</h2>
       </div>
       <div data-anim="up" style="--i:2" class="flex max-w-[360px] flex-col gap-3.5">
-        <p class="text-base leading-normal text-pretty">Cuatro piezas para todos los días. Algodón pesado, calces amplios y gráficos que no piden permiso.</p>
-        <span class="eyebrow">04 piezas · Tirada limitada</span>
+        <p class="text-base leading-normal text-pretty">Ocho piezas para todos los días. Algodón pesado, calces amplios y gráficos que no piden permiso.</p>
+        <span class="eyebrow">0{PRODUCTS.length} piezas · Tirada limitada</span>
       </div>
     </div>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-[clamp(14px,1.6vw,24px)] gap-y-[clamp(28px,3vw,40px)]">
-      {PRODUCTS.map((p, i) => <ProductCard product={p} index={i} />)}
+      {featured.map((p, i) => <ProductCard product={p} index={i} />)}
     </div>
+    <a href="/shop/" class="btn-lima mt-10 h-14 justify-between px-5 sm:max-w-[360px]">VER TODO EL SHOP <span aria-hidden="true">→</span></a>
     <p class="mt-10 text-xs tracking-[.04em]">Precios en ARS, ficticios. FUERA® es una marca conceptual: no hay stock ni ventas reales.</p>
   </section>
 
