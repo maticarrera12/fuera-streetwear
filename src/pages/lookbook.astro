@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { IMG, PRODUCTS } from '../data/products';
+
+const looks = [
+  { n: '01', img: IMG.edA, alt: 'Joven con skate en un estacionamiento', place: 'Estacionamiento', slugs: ['heavy-tee', 'signature-cap'], pos: 'object-center', ratio: 'aspect-[4/5]' },
+  { n: '02', img: IMG.edB, alt: 'Retrato de una joven con remera de color', place: 'Azotea', slugs: ['no-rules-tee', 'long-sleeve-tee'], pos: 'object-center', ratio: 'aspect-[3/4]' },
+  { n: '03', img: IMG.edC, alt: 'Dos personas sentadas sobre el capó de un auto', place: 'Calle', slugs: ['daily-uniform-hoodie', 'beanie'], pos: 'object-[50%_35%]', ratio: 'aspect-[4/3]' },
+];
+const bySlug = (s: string) => PRODUCTS.find((p) => p.slug === s)!;
+---
+
+<Layout title="Lookbook — FUERA®">
+  <main data-screen-label="Lookbook" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+      <a href="/" class="hover:underline">Inicio</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Lookbook</span>
+    </nav>
+
+    <header class="mb-[clamp(40px,6vw,88px)] flex flex-wrap items-end justify-between gap-x-12 gap-y-4 border-b-2 border-azul pb-6">
+      <div class="flex flex-col gap-[18px]">
+        <span class="eyebrow">Campaign 001</span>
+        <h1 class="display text-[clamp(52px,9vw,140px)] leading-[.86] tracking-[-.035em]">Fuera de<br />contexto</h1>
+      </div>
+      <p class="max-w-[340px] text-base leading-normal text-pretty">Tres looks, ninguna regla. Cada pieza de Drop 001 en su lugar natural, lista para comprar.</p>
+    </header>
+
+    <div class="flex flex-col gap-[clamp(56px,8vw,120px)]">
+      {looks.map((l, i) => (
+        <section aria-labelledby={`look-${l.n}`} class="grid grid-cols-1 items-end gap-x-[clamp(20px,3vw,48px)] gap-y-6 min-[900px]:grid-cols-12">
+          <figure class={`flex flex-col gap-3 min-[900px]:col-span-7 ${i % 2 ? 'min-[900px]:order-2 min-[900px]:col-[6/13]' : ''}`}>
+            <div data-anim="wipe-l" class={`photo-bg relative isolate overflow-hidden ${l.ratio}`}>
+              <img src={l.img} alt={l.alt} loading="lazy" class={`ink-img absolute inset-0 size-full object-cover ${l.pos}`} />
+              <span class="duo"></span>
+              <span class="absolute bottom-0 left-0 bg-crema pr-3.5 pt-2.5 font-display text-[clamp(28px,4vw,56px)] leading-[.85]">{l.n}</span>
+            </div>
+            <figcaption class="flex justify-between gap-3 text-[11px] font-semibold uppercase tracking-[.14em]"><span>Look {l.n}</span><span>{l.place}</span></figcaption>
+          </figure>
+          <div class={`flex flex-col gap-5 min-[900px]:col-span-5 ${i % 2 ? 'min-[900px]:order-1 min-[900px]:col-[1/6]' : ''}`}>
+            <h2 id={`look-${l.n}`} class="display text-[clamp(28px,3.5vw,48px)] leading-[.95]">Comprar el look {l.n}</h2>
+            <div class="grid grid-cols-2 gap-[clamp(12px,1.6vw,20px)]">
+              {l.slugs.map((s, j) => <ProductCard product={bySlug(s)} detailed={false} index={j} />)}
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <p class="mt-14 text-xs tracking-[.04em]">Imágenes de referencia: la campaña es conceptual y no hay producción fotográfica propia.</p>
+  </main>
+</Layout>

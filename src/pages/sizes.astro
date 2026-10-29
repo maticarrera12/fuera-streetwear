@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Example measurements in cm (flat garment). The brand is fictional.
+const tables = [
+  {
+    id: 'remeras-oversize',
+    title: 'Remeras oversize',
+    pieces: 'Heavy Tee · Long Sleeve Tee',
+    cols: ['Ancho de pecho', 'Largo'],
+    rows: [['S', '56', '72'], ['M', '58', '74'], ['L', '61', '76'], ['XL', '64', '78'], ['XXL', '67', '80']],
+  },
+  {
+    id: 'remeras-relajadas',
+    title: 'Remeras relajadas',
+    pieces: 'No Rules Tee',
+    cols: ['Ancho de pecho', 'Largo'],
+    rows: [['S', '53', '69'], ['M', '55', '71'], ['L', '57', '73'], ['XL', '60', '75'], ['XXL', '63', '77']],
+  },
+  {
+    id: 'buzos',
+    title: 'Buzos',
+    pieces: 'Daily Uniform Hoodie · Crewneck Fuera',
+    cols: ['Ancho de pecho', 'Largo'],
+    rows: [['S', '60', '68'], ['M', '62', '70'], ['L', '65', '72'], ['XL', '68', '74']],
+  },
+];
+const steps = [
+  ['Pecho', 'Medí la parte más ancha del pecho, con la cinta paralela al piso y sin apretar.'],
+  ['Largo', 'Medí desde la base del cuello hasta el borde inferior de una prenda que ya te quede bien.'],
+  ['Comparar', 'Apoyá esa prenda sobre una superficie plana y compará con las medidas de la tabla.'],
+];
+const th = 'px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[.14em]';
+const td = 'px-4 py-3 tabular-nums';
+---
+
+<Layout title="Guía de talles — FUERA®">
+  <main data-screen-label="Guía de talles" class="bg-crema px-[clamp(20px,3vw,40px)] pb-[clamp(72px,9vw,128px)] pt-5 text-azul">
+    <nav aria-label="Ruta" class="a-rise mb-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[.14em]">
+      <a href="/" class="hover:underline">Inicio</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Guía de talles</span>
+    </nav>
+
+    <header class="mb-10 flex flex-wrap items-end justify-between gap-x-12 gap-y-4 border-b-2 border-azul pb-6">
+      <h1 class="display text-[clamp(44px,8vw,128px)] leading-[.86] tracking-[-.035em]">Guía de<br />talles</h1>
+      <p class="max-w-[360px] text-base leading-normal text-pretty">Medidas de la prenda apoyada en plano, en centímetros. Si estás entre dos talles, elegí el menor para un calce oversize más controlado.</p>
+    </header>
+
+    <div class="grid grid-cols-1 items-start gap-[clamp(32px,5vw,72px)] min-[900px]:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      <div class="flex flex-col gap-10">
+        {tables.map((t) => (
+          <section id={t.id} aria-labelledby={`${t.id}-title`} class="scroll-mt-24">
+            <h2 id={`${t.id}-title`} class="display mb-1 text-[clamp(24px,3vw,36px)] leading-[.95]">{t.title}</h2>
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[.14em]">{t.pieces}</p>
+            <div class="overflow-x-auto border-2 border-azul">
+              <table class="w-full border-collapse text-sm">
+                <thead class="bg-azul text-crema">
+                  <tr><th scope="col" class={th}>Talle</th>{t.cols.map((c) => <th scope="col" class={th}>{c} (cm)</th>)}</tr>
+                </thead>
+                <tbody>
+                  {t.rows.map((r) => (
+                    <tr class="border-t border-azul/30 even:bg-azul/5">
+                      <th scope="row" class={`${td} text-left font-bold`}>{r[0]}</th>
+                      {r.slice(1).map((v) => <td class={td}>{v}</td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        ))}
+        <section id="accesorios" aria-labelledby="acc-title" class="scroll-mt-24">
+          <h2 id="acc-title" class="display mb-3 text-[clamp(24px,3vw,36px)] leading-[.95]">Accesorios</h2>
+          <p class="text-base leading-normal">La gorra es regulable (54–60 cm) y el gorro es elástico: ambos son talle único.</p>
+        </section>
+      </div>
+
+      <aside aria-labelledby="how-title" class="flex flex-col gap-6 border-2 border-azul p-6 min-[900px]:sticky min-[900px]:top-24">
+        <h2 id="how-title" class="display text-[clamp(24px,2.6vw,32px)] leading-[.95]">Cómo medirte</h2>
+        <ol class="m-0 flex list-none flex-col gap-5 p-0">
+          {steps.map(([t, d], i) => (
+            <li class="grid grid-cols-[auto_1fr] gap-x-4">
+              <span class="font-display text-[28px] leading-none">0{i + 1}</span>
+              <div class="flex flex-col gap-1"><span class="text-xs font-bold uppercase tracking-[.14em]">{t}</span><p class="text-sm leading-normal">{d}</p></div>
+            </li>
+          ))}
+        </ol>
+        <a href="/shop/" class="btn-lima h-14 justify-between px-5">VER EL SHOP <span aria-hidden="true">→</span></a>
+      </aside>
+    </div>
+
+    <p class="mt-10 text-xs tracking-[.04em]">Medidas de ejemplo: FUERA® es una marca conceptual y las prendas no existen.</p>
+  </main>
+</Layout>
