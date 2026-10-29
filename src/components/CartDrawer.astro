@@ -12,8 +12,8 @@ const iconBtn = 'min-h-10 cursor-pointer text-[11px] font-bold tracking-[.14em] 
 
   <div data-cart-empty class="flex flex-1 flex-col justify-center gap-5 px-5 py-8">
     <span class="display text-[clamp(36px,9vw,52px)] leading-[.88] tracking-[-.03em]">Vacío.<br />Por ahora.</span>
-    <p class="max-w-[30ch] text-[15px] leading-normal">Todavía no agregaste nada. Drop 001 tiene cuatro piezas esperando.</p>
-    <a href="/#drop" class="inline-flex h-[54px] items-center gap-3 self-start bg-azul px-6 text-[13px] font-bold tracking-[.12em] text-lima hover:bg-naranja hover:text-[#111]">VER DROP 001 →</a>
+    <p class="max-w-[30ch] text-[15px] leading-normal">Todavía no agregaste nada. Drop 001 está esperando.</p>
+    <a href="/shop/" class="inline-flex h-[54px] items-center gap-3 self-start bg-azul px-6 text-[13px] font-bold tracking-[.12em] text-lima hover:bg-naranja hover:text-[#111]">VER EL SHOP →</a>
   </div>
 
   <div data-cart-has hidden class="min-h-0 flex-1 flex-col [&:not([hidden])]:flex">
@@ -23,8 +23,8 @@ const iconBtn = 'min-h-10 cursor-pointer text-[11px] font-bold tracking-[.14em] 
         <span class="text-xs font-bold tracking-[.14em]">SUBTOTAL</span>
         <span data-subtotal class="font-display text-[26px] tabular-nums"></span>
       </div>
-      <span class="text-xs">Envío e impuestos se calcularían en el checkout.</span>
-      <button type="button" disabled class="h-14 cursor-not-allowed border-2 border-dashed border-azul text-[13px] font-bold tracking-[.12em] opacity-60">CHECKOUT NO DISPONIBLE — DEMO</button>
+      <span class="text-xs">El envío se calcula en el checkout.</span>
+      <a href="/checkout/" class="btn-lima h-14 justify-between px-5">IR AL CHECKOUT <span aria-hidden="true">→</span></a>
       <button type="button" data-close class={iconBtn + ' text-xs'}>SEGUIR MIRANDO</button>
     </div>
   </div>

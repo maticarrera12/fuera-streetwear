@@ -1,27 +1,13 @@
-type CatalogEntry = { name: string; price: number; img: string; colors: { id: string; name: string }[] };
-type Line = { key: string; slug: string; color: string; size: string; qty: number };
+import { MAX_QTY, fmt, loadCart, photo, readCatalog, saveCart, type Line } from './cart-store';
 
-const catalog: Record<string, CatalogEntry> = JSON.parse(document.getElementById('catalog')!.textContent!);
-const KEY = 'fuera-cart-v1';
-const MAX_QTY = 10;
+const catalog = readCatalog();
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => [...root.querySelectorAll<T>(sel)];
-const fmt = (n: number) => '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-const photo = (id: string, w: number) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 /* ---------- Cart state ---------- */
-let cart: Line[] = [];
-try {
-  const raw = JSON.parse(sessionStorage.getItem(KEY) || '[]');
-  if (Array.isArray(raw)) {
-    // Drop anything that doesn't map to the catalog: storage is user-controlled.
-    cart = raw.filter((l) => l && catalog[l.slug] && Number.isInteger(l.qty) && l.qty > 0).map((l) => ({ ...l, qty: Math.min(MAX_QTY, l.qty) }));
-  }
-} catch {}
+let cart: Line[] = loadCart(catalog);
 
-const save = () => {
-  try { sessionStorage.setItem(KEY, JSON.stringify(cart)); } catch {}
-};
+const save = () => saveCart(cart);
 const count = () => cart.reduce((a, l) => a + l.qty, 0);
 
 function setLine(key: string, fn: (q: number) => number) {
@@ -229,39 +215,44 @@ if (pdp) {
 }
 
 /* ---------- Newsletter (demo: validates, sends nothing) ---------- */
-const nlForm = $<HTMLFormElement>('#nl-form')!;
-const nlEmail = $<HTMLInputElement>('#nl-email')!;
-const nlMsg = $('#nl-msg')!;
-const nlDone = $('#nl-done')!;
-const setNlError = (msg: string) => {
-  nlEmail.setAttribute('aria-invalid', 'true');
-  nlMsg.replaceChildren();
-  const dot = document.createElement('span');
-  dot.className = 'size-2.5 flex-none bg-naranja';
-  const text = document.createElement('span');
-  text.textContent = msg;
-  nlMsg.append(dot, text);
-};
-const clearNlError = () => {
-  nlEmail.removeAttribute('aria-invalid');
-  nlMsg.replaceChildren();
-};
-nlEmail.addEventListener('input', clearNlError);
-nlForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const v = nlEmail.value.trim();
-  if (!v) return setNlError('Escribí tu email para sumarte.');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return setNlError('Ese email no parece válido. Revisalo.');
-  clearNlError();
-  $('#nl-sent')!.textContent = v;
-  nlForm.hidden = true;
-  nlDone.hidden = false;
-});
-$('#nl-reset')!.addEventListener('click', () => {
-  nlEmail.value = '';
-  nlForm.hidden = false;
-  nlDone.hidden = true;
-});
+// Pages that omit the newsletter band (checkout, order) have nothing to wire up.
+function initNewsletter() {
+  if (!$('#nl-form')) return;
+  const nlForm = $<HTMLFormElement>('#nl-form')!;
+  const nlEmail = $<HTMLInputElement>('#nl-email')!;
+  const nlMsg = $('#nl-msg')!;
+  const nlDone = $('#nl-done')!;
+  const setNlError = (msg: string) => {
+    nlEmail.setAttribute('aria-invalid', 'true');
+    nlMsg.replaceChildren();
+    const dot = document.createElement('span');
+    dot.className = 'size-2.5 flex-none bg-naranja';
+    const text = document.createElement('span');
+    text.textContent = msg;
+    nlMsg.append(dot, text);
+  };
+  const clearNlError = () => {
+    nlEmail.removeAttribute('aria-invalid');
+    nlMsg.replaceChildren();
+  };
+  nlEmail.addEventListener('input', clearNlError);
+  nlForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = nlEmail.value.trim();
+    if (!v) return setNlError('Escribí tu email para sumarte.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return setNlError('Ese email no parece válido. Revisalo.');
+    clearNlError();
+    $('#nl-sent')!.textContent = v;
+    nlForm.hidden = true;
+    nlDone.hidden = false;
+  });
+  $('#nl-reset')!.addEventListener('click', () => {
+    nlEmail.value = '';
+    nlForm.hidden = false;
+    nlDone.hidden = true;
+  });
+}
+initNewsletter();
 
 renderCart();
 
